@@ -113,8 +113,9 @@ defmodule Todolist.TimeManagement do
       [%WorkingTime{}, ...]
 
   """
-  def list_working_times do
-    Repo.all(WorkingTime)
+  def list_working_times!(userId) do
+    query = from t in WorkingTime, where: t.user_id == ^userId
+    Repo.all(query)
   end
 
   @doc """

@@ -12,7 +12,6 @@ defmodule TodolistWeb.UserController do
   def index(conn, %{"username" => username, "email" => email}) do
     query = from t in User, where: t.username == ^username and t.email == ^email, select: t, limit: 1
     user = Repo.one(query)
-    Logger.debug "Users: #{inspect(user)}"
     render(conn, "show.json", user: user)
   end
 
