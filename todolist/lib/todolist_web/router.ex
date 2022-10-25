@@ -24,6 +24,8 @@ defmodule TodolistWeb.Router do
   scope "/api", TodolistWeb do
     pipe_through :api
     resources "/users", UserController
+    resources "/clocks", ClockController
+    resources "/workingTimes", WorkingTimeController
   end
 
   # Enables LiveDashboard only for development

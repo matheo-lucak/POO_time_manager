@@ -1,10 +1,21 @@
 defmodule TodolistWeb.UserController do
   use TodolistWeb, :controller
+  require Logger
 
   alias Todolist.Account
   alias Todolist.Account.User
+  alias Todolist.Repo
+  import Ecto.Query
 
   action_fallback TodolistWeb.FallbackController
+
+  def index(conn, %{"username" => username}) do
+    users = Repo.one(from t in User, where: t.username == ^username and t.email == ^email, select: t, limit: 1)
+    query = from u in User, where: u.username == ^username
+    user = Repo.one(query)
+    Logger.debug "Users: #{inspect(user)}"
+    render(conn, "show.json", user: user)
+  end
 
   def index(conn, _params) do
     users = Account.list_users()
