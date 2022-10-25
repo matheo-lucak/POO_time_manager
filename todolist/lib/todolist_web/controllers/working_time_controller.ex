@@ -1,6 +1,6 @@
 defmodule TodolistWeb.WorkingTimeController do
   use TodolistWeb, :controller
-
+  require Logger
   alias Todolist.TimeManagement
   alias Todolist.TimeManagement.WorkingTime
 
@@ -11,7 +11,10 @@ defmodule TodolistWeb.WorkingTimeController do
     render(conn, "index.json", working_times: working_times)
   end
 
-  def create(conn, %{"working_time" => working_time_params}) do
+  def create(conn, %{"userId" => userId, "working_time" => working_time_params}) do
+
+    working_time_params = Map.put(working_time_params, "user_id", userId)
+
     with {:ok, %WorkingTime{} = working_time} <- TimeManagement.create_working_time(working_time_params) do
       conn
       |> put_status(:created)
@@ -21,7 +24,12 @@ defmodule TodolistWeb.WorkingTimeController do
   end
 
   def show(conn, %{"userId" => userId, "id" => id}) do
-    working_time = TimeManagement.get_working_time!(userId, id)
+    working_time = TimeManagement.get_working_time_by_user!(userId, id)
+    render(conn, "show.json", working_time: working_time)
+  end
+
+  def show(conn, %{"id" => id}) do
+    working_time = TimeManagement.get_working_time!(id)
     render(conn, "show.json", working_time: working_time)
   end
 

@@ -17,5 +17,3 @@ defmodule Todolist.TimeManagement.WorkingTime do
     |> validate_required([:start, :end, :user_id])
   end
 end
-
-
