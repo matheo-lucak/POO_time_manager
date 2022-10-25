@@ -132,7 +132,10 @@ defmodule Todolist.TimeManagement do
       ** (Ecto.NoResultsError)
 
   """
-  def get_working_time!(id), do: Repo.get!(WorkingTime, id)
+  def get_working_time!(userId, id) do
+    query = from t in WorkingTime, where: t.user_id == ^userId and t.id == ^id
+    Repo.one(query)
+  end
 
   @doc """
   Creates a working_time.

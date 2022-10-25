@@ -21,7 +21,7 @@ defmodule TodolistWeb.WorkingTimeController do
   end
 
   def show(conn, %{"userId" => userId, "id" => id}) do
-    working_time = TimeManagement.get_working_time!(id)
+    working_time = TimeManagement.get_working_time!(userId, id)
     render(conn, "show.json", working_time: working_time)
   end
 

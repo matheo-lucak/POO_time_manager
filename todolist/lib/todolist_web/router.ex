@@ -26,6 +26,7 @@ defmodule TodolistWeb.Router do
     resources "/users", UserController
     resources "/clocks", ClockController
     get "/workingtimes/:userID", WorkingTimeController, :index
+    get "/workingtimes/:userId/:id", WorkingTimeController, :show
   end
 
   # Enables LiveDashboard only for development
