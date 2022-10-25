@@ -9,9 +9,8 @@ defmodule TodolistWeb.UserController do
 
   action_fallback TodolistWeb.FallbackController
 
-  def index(conn, %{"username" => username}) do
-    users = Repo.one(from t in User, where: t.username == ^username and t.email == ^email, select: t, limit: 1)
-    query = from u in User, where: u.username == ^username
+  def index(conn, %{"username" => username, "email" => email}) do
+    query = from t in User, where: t.username == ^username and t.email == ^email, select: t, limit: 1
     user = Repo.one(query)
     Logger.debug "Users: #{inspect(user)}"
     render(conn, "show.json", user: user)
