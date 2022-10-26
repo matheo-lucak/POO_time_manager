@@ -1,9 +1,9 @@
 defmodule TodolistWeb.ClockControllerTest do
   use TodolistWeb.ConnCase
-  alias Todolist.TestUtils
 
   import Todolist.TimeManagementFixtures
   import Todolist.AccountFixtures
+  alias Todolist.TestUtils
   alias Todolist.TimeManagement
   alias Todolist.TimeManagement.Clock
 
@@ -13,15 +13,14 @@ defmodule TodolistWeb.ClockControllerTest do
   end
 
   describe "index" do
-    test "List user clock. User has no clock", %{conn: conn} do
-      user = user_fixture()
+    setup [:create_user]
 
+    test "List user clock. User has no clock", %{conn: conn, user: user} do
       conn = get(conn, Routes.clock_path(conn, :index, user.id))
       assert json_response(conn, 200)["data"] == nil
     end
 
-    test "List user clock. User has clock", %{conn: conn} do
-      user = user_fixture()
+    test "List user clock. User has clock", %{conn: conn, user: user} do
       {:ok, clock} = TimeManagement.create_user_clock(user.id)
 
       conn = get(conn, Routes.clock_path(conn, :index, user.id))
@@ -36,9 +35,9 @@ defmodule TodolistWeb.ClockControllerTest do
   end
 
   describe "Toggle clock" do
-    test "Toggle user clock once", %{conn: conn} do
-      user = user_fixture()
+    setup [:create_user]
 
+    test "Toggle user clock once", %{conn: conn, user: user} do
       conn = post(conn, Routes.clock_path(conn, :toggle, user.id))
       json_clock = assert json_response(conn, 200)["data"]
       clock = TimeManagement.get_user_clock(user.id)
@@ -50,9 +49,7 @@ defmodule TodolistWeb.ClockControllerTest do
              }
     end
 
-    test "Toggle user clock many times", %{conn: conn} do
-      user = user_fixture()
-
+    test "Toggle user clock many times", %{conn: conn, user: user} do
       Enum.each(0..99, fn i ->
         conn = post(conn, Routes.clock_path(conn, :toggle, user.id))
         json_clock = assert json_response(conn, 200)["data"]
@@ -72,5 +69,10 @@ defmodule TodolistWeb.ClockControllerTest do
                }
       end)
     end
+  end
+
+  defp create_user(_) do
+    user = user_fixture()
+    %{user: user}
   end
 end
