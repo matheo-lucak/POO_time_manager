@@ -22,6 +22,33 @@ defmodule Todolist.Account do
   end
 
   @doc """
+  Returns the list of maybe filtered users.
+
+  ## Examples
+
+      iex> list_users()
+      [%User{}, ...]
+
+  """
+  def list_users(filter \\ %{}) do
+    User
+    |> apply_filter(filter)
+    |> Repo.all()
+  end
+
+  defp apply_filter(query, filter) do
+    query
+    |> filter_email(filter["email"])
+    |> filter_username(filter["username"])
+  end
+
+  defp filter_email(query, nil), do: query
+  defp filter_email(query, email), do: from u in query, where: u.email == ^email
+
+  defp filter_username(query, nil), do: query
+  defp filter_username(query, username), do: from u in query, where: u.username == ^username
+
+  @doc """
   Gets a single user.
 
   Return nil if the User does not exist.
