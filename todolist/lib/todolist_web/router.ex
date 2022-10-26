@@ -23,11 +23,17 @@ defmodule TodolistWeb.Router do
   # Other scopes may use custom stacks.
   scope "/api", TodolistWeb do
     pipe_through :api
+
     resources "/users", UserController
+
     get "/clocks/:userID", ClockController, :index
     post "/clocks/:userID", ClockController, :toggle
+
     get "/workingtimes/:userID", WorkingTimeController, :index
-    get "/workingtimes/:userId/:id", WorkingTimeController, :show
+    get "/workingtimes/:userID/:id", WorkingTimeController, :show
+    post "/workingtimes/:userID", WorkingTimeController, :create
+    put "/workingtimes/:id", WorkingTimeController, :update
+    delete "/workingtimes/:id", WorkingTimeController, :delete
   end
 
   # Enables LiveDashboard only for development

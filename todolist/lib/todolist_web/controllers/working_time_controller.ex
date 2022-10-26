@@ -6,12 +6,13 @@ defmodule TodolistWeb.WorkingTimeController do
 
   action_fallback TodolistWeb.FallbackController
 
-  def index(conn, %{"userID" => userId}) do
-    working_times = TimeManagement.list_working_times_by_user(userId)
+  def index(conn, %{"userID" => userID}) do
+    working_times = TimeManagement.list_working_times_by_user(userID)
     render(conn, "index.json", working_times: working_times)
   end
 
-  def create(conn, %{"working_time" => working_time_params}) do
+  def create(conn, %{"userID"=> userID, "working_time" => working_time_params}) do
+    working_time_params = Map.put(working_time_params, "user_id", userID)
     with {:ok, %WorkingTime{} = working_time} <- TimeManagement.create_working_time(working_time_params) do
       conn
       |> put_status(:created)
@@ -20,8 +21,8 @@ defmodule TodolistWeb.WorkingTimeController do
     end
   end
 
-  def show(conn, %{"userId" => userId, "id" => id}) do
-    working_time = TimeManagement.get_working_time_by_user(userId, id)
+  def show(conn, %{"userID" => userID, "id" => id}) do
+    working_time = TimeManagement.get_working_time_by_user(userID, id)
     render(conn, "show.json", working_time: working_time)
   end
 
