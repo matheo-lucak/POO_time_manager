@@ -22,6 +22,62 @@ defmodule Todolist.TimeManagement do
   end
 
   @doc """
+  Get a clock from user id
+  Returns Clock
+  """
+  def get_user_clock(userId) do
+    query = from(t in Clock, where: t.user_id == ^userId)
+    Repo.one(query)
+  end
+
+  @doc """
+  Create a clock linked to a user id
+  Returns Created user clock
+  """
+  def create_user_clock(userId) do
+    create_clock(%{
+      status: false,
+      time: DateTime.utc_now(),
+      user_id: userId
+    })
+  end
+
+  @doc """
+  Returns Clock
+  """
+  def find_or_create_user_clock(userId) do
+    found_clock = get_user_clock(userId)
+
+    if !found_clock do
+      create_user_clock(userId)
+      get_user_clock(userId)
+    else
+      get_user_clock(userId)
+    end
+  end
+
+  @doc """
+  Returns Clock
+  """
+  def toggle_user_clock(userId) do
+    clock = find_or_create_user_clock(userId)
+
+    if clock.status == true do
+      # Turn off the clock.
+      # Create new WorkingTime
+      create_working_time(%{
+        end: DateTime.utc_now(),
+        start: clock.time,
+        user_id: userId
+      })
+      update_clock(clock, %{status: false})
+    else
+      # Turn on the clock
+      update_clock(clock, %{status: true, time: DateTime.utc_now()})
+    end
+  end
+
+  @doc """
   Gets a single clock.
 
   Raises `Ecto.NoResultsError` if the Clock does not exist.
@@ -114,7 +170,7 @@ defmodule Todolist.TimeManagement do
 
   """
   def list_working_times!(userId) do
-    query = from t in WorkingTime, where: t.user_id == ^userId
+    query = from(t in WorkingTime, where: t.user_id == ^userId)
     Repo.all(query)
   end
 

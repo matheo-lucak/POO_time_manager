@@ -24,7 +24,8 @@ defmodule TodolistWeb.Router do
   scope "/api", TodolistWeb do
     pipe_through :api
     resources "/users", UserController
-    resources "/clocks", ClockController
+    get "/clocks/:userID", ClockController, :index
+    post "/clocks/:userID", ClockController, :toggle
     get "/workingtimes/:userID", WorkingTimeController, :index
     get "/workingtimes/:userId/:id", WorkingTimeController, :show
     get "/workingtimes/:id", WorkingTimeController, :show
