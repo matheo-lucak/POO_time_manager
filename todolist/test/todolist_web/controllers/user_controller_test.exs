@@ -101,20 +101,19 @@ defmodule TodolistWeb.UserControllerTest do
       } = create_different_users(%{})
 
       conn = get(conn, Routes.user_path(conn, :index, username: "unmatched username", email: "unmatched@email.fr"))
-      assert json_response(conn, 200)["data"] == nil
+      assert json_response(conn, 200)["data"] == []
 
       conn = get(conn, Routes.user_path(conn, :index, username: "unique username", email: "unmatched@email.fr"))
-      assert json_response(conn, 200)["data"] == nil
+      assert json_response(conn, 200)["data"] == []
 
       conn = get(conn, Routes.user_path(conn, :index, username: "unmatched username", email: "unique@email.fr"))
-      assert json_response(conn, 200)["data"] == nil
+      assert json_response(conn, 200)["data"] == []
 
-      #todo(@matska)
-      # conn = get(conn, Routes.user_path(conn, :index, username: "unique username", email: "unique@email.fr"))
-      # assert json_response(conn, 200)["data"] == unique_user |> Enum.map(&user_to_map/1)
+      conn = get(conn, Routes.user_path(conn, :index, username: "unique username", email: "unique@email.fr"))
+      assert json_response(conn, 200)["data"] == unique_user |> Enum.map(&user_to_map/1)
 
-      # conn = get(conn, Routes.user_path(conn, :index, username: "clone username", email: "clone@email.fr"))
-      # assert json_response(conn, 200)["data"] == dup_user |> Enum.map(&user_to_map/1)
+      conn = get(conn, Routes.user_path(conn, :index, username: "clone username", email: "clone@email.fr"))
+      assert json_response(conn, 200)["data"] == dup_user |> Enum.map(&user_to_map/1)
     end
 
   end
@@ -213,8 +212,8 @@ defmodule TodolistWeb.UserControllerTest do
     ]
 
     dup_user = [
-      user_fixture(%{email: "clone@email.fr", username: "clone user"}),
-      user_fixture(%{email: "clone@email.fr", username: "clone user"})
+      user_fixture(%{email: "clone@email.fr", username: "clone username"}),
+      user_fixture(%{email: "clone@email.fr", username: "clone username"})
     ]
 
     %{
