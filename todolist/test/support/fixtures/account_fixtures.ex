@@ -11,7 +11,7 @@ defmodule Todolist.AccountFixtures do
     {:ok, user} =
       attrs
       |> Enum.into(%{
-        email: "some email",
+        email: "some@email.fr",
         username: "some username"
       })
       |> Todolist.Account.create_user()

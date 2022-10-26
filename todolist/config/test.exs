@@ -6,7 +6,7 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :todolist, Todolist.Repo,
-  url: System.get_env("DATABASE_URL"),
+  url: System.get_env("TEST_DATABASE_URL"),
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 
