@@ -1,0 +1,81 @@
+@import './base.css';
+@import './shortcuts.css';
+
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+
+}
+
+html, body {
+  height: 100%;
+  background-color: #f9f9fb;
+}
+
+.main-container {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  margin: 0 auto;
+  max-width: 1140px;
+  margin-top: 100px;
+  padding-bottom: 78px;
+  flex: 1 0 auto;
+}
+
+footer {
+  width: 100%;
+}
+.footer-container {
+  height: 96px;
+  padding: 11px 0 41px 0;
+  background-color:#3c4462;
+  flex-shrink: 0;
+}
+
+.app-card {
+  border-radius: 20px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  padding: 11px 16px 25px 20px;
+}
+
+.app-card-tall {
+  width: 780px;
+  height: 520px;
+}
+
+.app-card-map-large {
+  width: 1140px;
+  height: 420px;
+}
+
+.app-card-large {
+  width: 1140px;
+  height: 310px;
+}
+
+.app-card-large-light {
+  width: 1140px;
+  height: 200px;
+}
+
+.app-card-small {
+  width: 622px;
+  height: 230px;
+}
+
+.feature-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 30px;
+}

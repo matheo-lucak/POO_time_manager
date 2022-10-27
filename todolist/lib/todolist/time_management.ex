@@ -22,6 +22,62 @@ defmodule Todolist.TimeManagement do
   end
 
   @doc """
+  Get a clock from user id
+  Returns Clock
+  """
+  def get_user_clock(userID) do
+    query = from(t in Clock, where: t.user_id == ^userID)
+    Repo.one(query)
+  end
+
+  @doc """
+  Create a clock linked to a user id
+  Returns Created user clock
+  """
+  def create_user_clock(userID) do
+    create_clock(%{
+      status: false,
+      time: DateTime.utc_now(),
+      user_id: userID
+    })
+  end
+
+  @doc """
+  Returns Clock
+  """
+  def find_or_create_user_clock(userID) do
+    found_clock = get_user_clock(userID)
+
+    if !found_clock do
+      create_user_clock(userID)
+      get_user_clock(userID)
+    else
+      get_user_clock(userID)
+    end
+  end
+
+  @doc """
+  Returns Clock
+  """
+  def toggle_user_clock(userID) do
+    clock = find_or_create_user_clock(userID)
+
+    if clock.status == true do
+      # Turn off the clock.
+      # Create new WorkingTime
+      create_working_time(%{
+        end: DateTime.utc_now(),
+        start: clock.time,
+        user_id: userID
+      })
+      update_clock(clock, %{status: false})
+    else
+      # Turn on the clock
+      update_clock(clock, %{status: true, time: DateTime.utc_now()})
+    end
+  end
+
+  @doc """
   Gets a single clock.
 
   Raises `Ecto.NoResultsError` if the Clock does not exist.
@@ -113,10 +169,40 @@ defmodule Todolist.TimeManagement do
       [%WorkingTime{}, ...]
 
   """
-  def list_working_times!(userId) do
-    query = from t in WorkingTime, where: t.user_id == ^userId
-    Repo.all(query)
+  def list_working_times() do
+    Repo.all(WorkingTime)
   end
+
+  @doc """
+  Returns the list of working_times of a given user, applying filters
+
+  ## Examples
+
+      iex> list_working_times_by_user()
+      [%WorkingTime{}, ...]
+
+  """
+  def list_working_times_by_user(userID, filter \\ %{}) do
+    WorkingTime
+    |> apply_filter(userID, filter)
+    |> Repo.all()
+  end
+
+  defp apply_filter(query, userID, filter) do
+    query
+    |> filter_user(userID)
+    |> filter_start(filter["start"])
+    |> filter_end(filter["end"])
+  end
+
+  defp filter_user(query, nil), do: query
+  defp filter_user(query, userID), do: from t in query, where: t.user_id == ^userID
+
+  defp filter_start(query, nil), do: query
+  defp filter_start(query, start_after), do: from t in query, where: t.start >= ^start_after
+
+  defp filter_end(query, nil), do: query
+  defp filter_end(query, end_before), do: from t in query, where: t.end <= ^end_before
 
   @doc """
   Gets a single working_time.
@@ -132,7 +218,16 @@ defmodule Todolist.TimeManagement do
       ** (Ecto.NoResultsError)
 
   """
-  def get_working_time!(id), do: Repo.get!(WorkingTime, id)
+  def get_working_time(id) do
+    query = from t in WorkingTime, where: t.id == ^id
+    Repo.one(query)
+  end
+
+  def get_working_time_by_user(userID, id) do
+    query = from t in WorkingTime, where: t.user_id == ^userID and t.id == ^id
+    Repo.one(query)
+  end
+
 
   @doc """
   Creates a working_time.

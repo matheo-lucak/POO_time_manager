@@ -1,6 +1,7 @@
 version: '3.6'
 services:
   db:
+    container_name: tm_db
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_PASSWORD: postgres
@@ -12,11 +13,10 @@ services:
     volumes:
       - 'pgdata:/var/lib/postgresql/data'
   api:
+    container_name: tm_api
     build: ./todolist
     depends_on:
       - db
-    environment:
-      MIX_ENV: dev
     env_file:
       - .env
     ports:

@@ -7,16 +7,11 @@ defmodule TodolistWeb.UserController do
   alias Todolist.Repo
   import Ecto.Query
 
-  action_fallback TodolistWeb.FallbackController
+  action_fallback(TodolistWeb.FallbackController)
 
-  def index(conn, %{"username" => username, "email" => email}) do
-    query = from t in User, where: t.username == ^username and t.email == ^email, select: t, limit: 1
-    user = Repo.one(query)
-    render(conn, "show.json", user: user)
-  end
+  def index(conn, params) do
+    users = Account.list_users(params)
 
-  def index(conn, _params) do
-    users = Account.list_users()
     render(conn, "index.json", users: users)
   end
 
@@ -30,12 +25,12 @@ defmodule TodolistWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Account.get_user!(id)
+    user = Account.get_user(id)
     render(conn, "show.json", user: user)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Account.get_user!(id)
+    user = Account.get_user(id)
 
     with {:ok, %User{} = user} <- Account.update_user(user, user_params) do
       render(conn, "show.json", user: user)
@@ -43,7 +38,7 @@ defmodule TodolistWeb.UserController do
   end
 
   def delete(conn, %{"id" => id}) do
-    user = Account.get_user!(id)
+    user = Account.get_user(id)
 
     with {:ok, %User{}} <- Account.delete_user(user) do
       send_resp(conn, :no_content, "")
