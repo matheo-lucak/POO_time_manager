@@ -2,87 +2,77 @@ defmodule TodolistWeb.ClockControllerTest do
   use TodolistWeb.ConnCase
 
   import Todolist.TimeManagementFixtures
-
+  import Todolist.AccountFixtures
+  alias Todolist.TestUtils
+  alias Todolist.TimeManagement
   alias Todolist.TimeManagement.Clock
 
-  @create_attrs %{
-    status: true,
-    time: ~U[2022-10-24 09:38:00Z]
-  }
-  @update_attrs %{
-    status: false,
-    time: ~U[2022-10-25 09:38:00Z]
-  }
-  @invalid_attrs %{status: nil, time: nil}
-
   setup %{conn: conn} do
+    TestUtils.delete_all()
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
   describe "index" do
-    test "lists all clocks", %{conn: conn} do
-      conn = get(conn, Routes.clock_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+    setup [:create_user]
+
+    test "List user clock. User has no clock", %{conn: conn, user: user} do
+      conn = get(conn, Routes.clock_path(conn, :index, user.id))
+      assert json_response(conn, 200)["data"] == nil
+    end
+
+    test "List user clock. User has clock", %{conn: conn, user: user} do
+      {:ok, clock} = TimeManagement.create_user_clock(user.id)
+
+      conn = get(conn, Routes.clock_path(conn, :index, user.id))
+      json_clock = assert json_response(conn, 200)["data"]
+
+      assert json_clock == %{
+               "id" => clock.id,
+               "status" => clock.status,
+               "time" => DateTime.to_iso8601(clock.time)
+             }
     end
   end
 
-  describe "create clock" do
-    test "renders clock when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.clock_path(conn, :create), clock: @create_attrs)
-      assert %{"id" => id} = json_response(conn, 201)["data"]
+  describe "Toggle clock" do
+    setup [:create_user]
 
-      conn = get(conn, Routes.clock_path(conn, :show, id))
+    test "Toggle user clock once", %{conn: conn, user: user} do
+      conn = post(conn, Routes.clock_path(conn, :toggle, user.id))
+      json_clock = assert json_response(conn, 200)["data"]
+      clock = TimeManagement.get_user_clock(user.id)
 
-      assert %{
-               "id" => ^id,
-               "status" => true,
-               "time" => "2022-10-24T09:38:00Z"
-             } = json_response(conn, 200)["data"]
+      assert json_clock == %{
+               "id" => clock.id,
+               "status" => clock.status,
+               "time" => DateTime.to_iso8601(clock.time)
+             }
     end
 
-    test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.clock_path(conn, :create), clock: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
-    end
-  end
+    test "Toggle user clock many times", %{conn: conn, user: user} do
+      Enum.each(0..99, fn i ->
+        conn = post(conn, Routes.clock_path(conn, :toggle, user.id))
+        json_clock = assert json_response(conn, 200)["data"]
+        clock = TimeManagement.get_user_clock(user.id)
 
-  describe "update clock" do
-    setup [:create_clock]
+        # Just to be sure clock has been toggled
+        if rem(i, 2) == 0 do
+          assert clock.status == true
+        else
+          assert clock.status == false
+        end
 
-    test "renders clock when data is valid", %{conn: conn, clock: %Clock{id: id} = clock} do
-      conn = put(conn, Routes.clock_path(conn, :update, clock), clock: @update_attrs)
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
-
-      conn = get(conn, Routes.clock_path(conn, :show, id))
-
-      assert %{
-               "id" => ^id,
-               "status" => false,
-               "time" => "2022-10-25T09:38:00Z"
-             } = json_response(conn, 200)["data"]
-    end
-
-    test "renders errors when data is invalid", %{conn: conn, clock: clock} do
-      conn = put(conn, Routes.clock_path(conn, :update, clock), clock: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
+        assert json_clock == %{
+                 "id" => clock.id,
+                 "status" => clock.status,
+                 "time" => DateTime.to_iso8601(clock.time)
+               }
+      end)
     end
   end
 
-  describe "delete clock" do
-    setup [:create_clock]
-
-    test "deletes chosen clock", %{conn: conn, clock: clock} do
-      conn = delete(conn, Routes.clock_path(conn, :delete, clock))
-      assert response(conn, 204)
-
-      assert_error_sent 404, fn ->
-        get(conn, Routes.clock_path(conn, :show, clock))
-      end
-    end
-  end
-
-  defp create_clock(_) do
-    clock = clock_fixture()
-    %{clock: clock}
+  defp create_user(_) do
+    user = user_fixture()
+    %{user: user}
   end
 end

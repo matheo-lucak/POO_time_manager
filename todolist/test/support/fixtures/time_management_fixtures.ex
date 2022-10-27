@@ -27,7 +27,7 @@ defmodule Todolist.TimeManagementFixtures do
       attrs
       |> Enum.into(%{
         end: ~U[2022-10-24 09:38:00Z],
-        start: ~U[2022-10-24 09:38:00Z]
+        start: ~U[2022-10-25 09:38:00Z]
       })
       |> Todolist.TimeManagement.create_working_time()
 

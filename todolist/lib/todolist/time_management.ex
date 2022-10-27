@@ -169,7 +169,14 @@ defmodule Todolist.TimeManagement do
       [%WorkingTime{}, ...]
 
   """
-  def list_working_times!(userId) do
+  def list_working_times() do
+    Repo.all(WorkingTime)
+  end
+
+  @doc """
+  Returns the list of working_times of a given user.
+  """
+  def list_working_times_by_user(userId) do
     query = from(t in WorkingTime, where: t.user_id == ^userId)
     Repo.all(query)
   end
@@ -188,15 +195,16 @@ defmodule Todolist.TimeManagement do
       ** (Ecto.NoResultsError)
 
   """
-  def get_working_time!(id) do
+  def get_working_time(id) do
     query = from t in WorkingTime, where: t.id == ^id
     Repo.one(query)
   end
 
-  def get_working_time_by_user!(userId, id) do
+  def get_working_time_by_user(userId, id) do
     query = from t in WorkingTime, where: t.user_id == ^userId and t.id == ^id
     Repo.one(query)
   end
+
 
   @doc """
   Creates a working_time.
