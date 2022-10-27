@@ -4,31 +4,28 @@ start:
 stop:
 	docker-compose down
 
-build:
-	docker-compose build api
-
-shell:
-	docker-compose run --rm api bash
+build: api-build
 
 logs:
 	docker-compose logs -f
 
-install:
-	docker-compose run --rm api mix deps.get
+test: api-test
 
-compile:
-	docker-compose run --rm api bash -c "mix do compile, phx.digest"
+##############################
+##########   API    ##########
+##############################
 
-db-setup:
-	docker-compose run --rm api mix ecto.setup
+api-build:
+	docker-compose build api
 
-db-reset:
+api-shell:
+	docker-compose run --rm api bash
+
+api-db-reset:
 	docker-compose run --rm api mix ecto.reset
 
-start-interactive:
+api-start-iteractive:
 	docker-compose run --rm --service-ports api iex -S mix phx.server
 
-test:
+api-test:
 	MIX_ENV=test docker-compose run --rm api mix test
-
-setup: build install compile db-setup

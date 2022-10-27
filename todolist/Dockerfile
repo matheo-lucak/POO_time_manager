@@ -1,10 +1,19 @@
-FROM bitwalker/alpine-elixir-phoenix:latest
+FROM elixir:latest
 
-WORKDIR /app
+EXPOSE "${API_PORT}"
+WORKDIR /api
+
+RUN apt-get update && \
+    apt-get install -y postgresql-client
+
+RUN mix local.hex --force
 
 COPY mix.exs .
 COPY mix.lock .
 
-CMD mix deps.get && mix phx.server
+RUN mix local.hex --force
+RUN mix local.rebar --force
+RUN mix deps.get
+RUN mix deps.compile
 
-EXPOSE 4000
+CMD ["bash", "entrypoint.sh"]
