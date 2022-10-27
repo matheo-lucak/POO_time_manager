@@ -3,15 +3,20 @@ defmodule TodolistWeb.WorkingTimeController do
   require Logger
   alias Todolist.TimeManagement
   alias Todolist.TimeManagement.WorkingTime
+  alias Todolist.Account
 
   action_fallback(TodolistWeb.FallbackController)
 
   def index(conn, %{"userID" => userID} = params) do
+    Account.verify_user!(userID)
+
     working_times = TimeManagement.list_working_times_by_user(userID, params)
     render(conn, "index.json", working_times: working_times)
   end
 
   def create(conn, %{"userID" => userID, "working_time" => working_time_params}) do
+    Account.verify_user!(userID)
+
     working_time_params = Map.put(working_time_params, "user_id", userID)
 
     with {:ok, %WorkingTime{} = working_time} <-
@@ -24,6 +29,8 @@ defmodule TodolistWeb.WorkingTimeController do
   end
 
   def show(conn, %{"userID" => userID, "id" => id}) do
+    Account.verify_user!(userID)
+
     working_time = TimeManagement.get_working_time_by_user(userID, id)
     render(conn, "show.json", working_time: working_time)
   end

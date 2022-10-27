@@ -6,6 +6,7 @@ defmodule TodolistWeb.ClockControllerTest do
   alias Todolist.TestUtils
   alias Todolist.TimeManagement
   alias Todolist.TimeManagement.Clock
+  alias Todolist.Account
 
   setup %{conn: conn} do
     TestUtils.delete_all()
@@ -31,6 +32,14 @@ defmodule TodolistWeb.ClockControllerTest do
                "status" => clock.status,
                "time" => DateTime.to_iso8601(clock.time)
              }
+    end
+
+    test "List user clock of unknown user", %{conn: conn} do
+      user = user_fixture()
+
+      assert_raise Account.UserNotFoundError, fn ->
+        get(conn, Routes.clock_path(conn, :index, user.id + 1))
+      end
     end
   end
 
@@ -68,6 +77,14 @@ defmodule TodolistWeb.ClockControllerTest do
                  "time" => DateTime.to_iso8601(clock.time)
                }
       end)
+    end
+
+    test "Toggle user clock of unknown user", %{conn: conn} do
+      user = user_fixture()
+
+      assert_raise Account.UserNotFoundError, fn ->
+        post(conn, Routes.clock_path(conn, :toggle, user.id + 1))
+      end
     end
   end
 
