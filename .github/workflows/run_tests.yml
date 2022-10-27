@@ -31,9 +31,6 @@ jobs:
         with:
           version: "1.29.2"
 
-      - name: Build project
-        run: make setup
-
       - name: Run project
         run: make start
 

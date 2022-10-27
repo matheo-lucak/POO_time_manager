@@ -22,13 +22,13 @@ api-shell:
 	docker-compose run --rm api bash
 
 api-db-reset:
-	docker-compose run --rm api mix ecto.reset
+	docker-compose run api mix ecto.reset
 
 api-start-iteractive:
 	docker-compose run --rm --service-ports api iex -S mix phx.server
 
 api-test:
-	MIX_ENV=test docker-compose run --rm api mix test
+	MIX_ENV=test docker-compose run api mix test
 
 ##############################
 ##########   APP    ##########
