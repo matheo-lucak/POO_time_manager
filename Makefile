@@ -9,7 +9,7 @@ build: api-build
 logs:
 	docker-compose logs -f
 
-test: api-test
+test: api-test app-test
 
 ##############################
 ##########   API    ##########
@@ -29,3 +29,14 @@ api-start-iteractive:
 
 api-test:
 	MIX_ENV=test docker-compose run --rm api mix test
+
+##############################
+##########   APP    ##########
+##############################
+
+app-build:
+	docker-compose build app
+
+app-test:
+	echo "Not implemented"
+#	docker-compose run --rm app npm run test:unit
