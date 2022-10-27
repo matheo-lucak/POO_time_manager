@@ -13,10 +13,35 @@ jobs:
 
       - uses: KengoTODA/actions-setup-docker-compose@main
         with:
-          version: '1.29.2'
+          version: "1.29.2"
 
-      - name: Install project
-        run: make install
+      - name: Setup project
+        run: make setup
 
       - name: Run tests
         run: make test
+
+  build_and_run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: KengoTODA/actions-setup-docker-compose@main
+        with:
+          version: "1.29.2"
+
+      - name: Setup project
+        run: make setup
+
+      - name: Run project
+        run: make start
+
+      - name: Stop project
+        run: make stop
+
+      - name: Reset db
+        run: make db-reset
