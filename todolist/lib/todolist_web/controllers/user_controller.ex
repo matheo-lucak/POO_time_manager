@@ -7,16 +7,11 @@ defmodule TodolistWeb.UserController do
   alias Todolist.Repo
   import Ecto.Query
 
-  action_fallback TodolistWeb.FallbackController
+  action_fallback(TodolistWeb.FallbackController)
 
-  def index(conn, %{"username" => username, "email" => email}) do
-    query = from t in User, where: t.username == ^username and t.email == ^email, select: t, limit: 1
-    user = Repo.one(query)
-    render(conn, "show.json", user: user)
-  end
+  def index(conn, params) do
+    users = Account.list_users(params)
 
-  def index(conn, _params) do
-    users = Account.list_users()
     render(conn, "index.json", users: users)
   end
 

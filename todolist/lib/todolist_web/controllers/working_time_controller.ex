@@ -6,8 +6,8 @@ defmodule TodolistWeb.WorkingTimeController do
 
   action_fallback(TodolistWeb.FallbackController)
 
-  def index(conn, %{"userID" => userID}) do
-    working_times = TimeManagement.list_working_times_by_user(userID)
+  def index(conn, %{"userID" => userID} = params) do
+    working_times = TimeManagement.list_working_times_by_user(userID, params)
     render(conn, "index.json", working_times: working_times)
   end
 
@@ -18,7 +18,7 @@ defmodule TodolistWeb.WorkingTimeController do
            TimeManagement.create_working_time(working_time_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.working_time_path(conn, :show, working_time))
+      |> put_resp_header("location", Routes.working_time_path(conn, :show, userID, working_time.id))
       |> render("show.json", working_time: working_time)
     end
   end

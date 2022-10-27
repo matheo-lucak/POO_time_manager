@@ -38,18 +38,187 @@ defmodule TodolistWeb.WorkingTimeControllerTest do
         working_time_fixture(%{user_id: user.id})
       ]
 
-      formatted_working_times =
-        Enum.map(working_times, fn w ->
-          %{
-            "id" => w.id,
-            "user_id" => user.id,
-            "start" => DateTime.to_iso8601(w.start),
-            "end" => DateTime.to_iso8601(w.end)
-          }
-        end)
+      formatted_working_times = working_times_to_maps(working_times, user.id)
 
       conn = get(conn, Routes.working_time_path(conn, :index, user.id))
       assert json_response(conn, 200)["data"] == formatted_working_times
+    end
+
+    test "lists all working_times. Filter by start", %{conn: conn} do
+      user = user_fixture()
+
+      working_times = [
+        working_time_fixture(%{user_id: user.id, start: ~U[2000-10-10 00:00:00Z]}),
+        working_time_fixture(%{user_id: user.id, start: ~U[2001-10-10 00:00:00Z]}),
+        working_time_fixture(%{user_id: user.id, start: ~U[2002-10-10 00:00:00Z]})
+      ]
+
+      formatted_working_times = working_times_to_maps(working_times, user.id)
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id, start: "1999-10-10T00:00:00Z")
+        )
+
+      assert json_response(conn, 200)["data"] == formatted_working_times
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id, start: "2000-10-10T00:00:00Z")
+        )
+
+      assert json_response(conn, 200)["data"] == formatted_working_times
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id, start: "2001-10-10T00:00:00Z")
+        )
+
+      assert json_response(conn, 200)["data"] == [
+               Enum.at(formatted_working_times, 1),
+               Enum.at(formatted_working_times, 2)
+             ]
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id, start: "2002-10-10T00:00:00Z")
+        )
+
+      assert json_response(conn, 200)["data"] == [
+               Enum.at(formatted_working_times, 2)
+             ]
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id, start: "2003-10-10T00:00:00Z")
+        )
+
+      assert json_response(conn, 200)["data"] == []
+    end
+
+    test "lists all working_times. Filter by end", %{conn: conn} do
+      user = user_fixture()
+
+      working_times = [
+        working_time_fixture(%{user_id: user.id, end: ~U[2000-10-10 00:00:00Z]}),
+        working_time_fixture(%{user_id: user.id, end: ~U[2001-10-10 00:00:00Z]}),
+        working_time_fixture(%{user_id: user.id, end: ~U[2002-10-10 00:00:00Z]})
+      ]
+
+      formatted_working_times = working_times_to_maps(working_times, user.id)
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id, end: "1999-10-10T00:00:00Z")
+        )
+
+      assert json_response(conn, 200)["data"] == []
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id, end: "2000-10-10T00:00:00Z")
+        )
+
+      assert json_response(conn, 200)["data"] == [
+               Enum.at(formatted_working_times, 0)
+             ]
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id, end: "2001-10-10T00:00:00Z")
+        )
+
+      assert json_response(conn, 200)["data"] == [
+               Enum.at(formatted_working_times, 0),
+               Enum.at(formatted_working_times, 1)
+             ]
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id, end: "2002-10-10T00:00:00Z")
+        )
+
+      assert json_response(conn, 200)["data"] == formatted_working_times
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id, end: "2003-10-10T00:00:00Z")
+        )
+
+      assert json_response(conn, 200)["data"] == formatted_working_times
+    end
+
+    test "lists all working_times. Filter by start and end", %{conn: conn} do
+      user = user_fixture()
+
+      working_times = [
+        working_time_fixture(%{
+          user_id: user.id,
+          start: ~U[2000-10-10 00:00:00Z],
+          end: ~U[2001-10-10 00:00:00Z]
+        }),
+        working_time_fixture(%{
+          user_id: user.id,
+          start: ~U[2002-10-10 00:00:00Z],
+          end: ~U[2003-10-10 00:00:00Z]
+        })
+      ]
+
+      formatted_working_times = working_times_to_maps(working_times, user.id)
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id,
+            start: "1999-10-10T00:00:00Z",
+            end: "2004-10-10T00:00:00Z"
+          )
+        )
+
+      assert json_response(conn, 200)["data"] == formatted_working_times
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id,
+            start: "1999-10-10T00:00:00Z",
+            end: "2001-10-10T00:00:00Z"
+          )
+        )
+
+      assert json_response(conn, 200)["data"] == [Enum.at(formatted_working_times, 0)]
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id,
+            start: "2002-10-10T00:00:00Z",
+            end: "2004-10-10T00:00:00Z"
+          )
+        )
+
+      assert json_response(conn, 200)["data"] == [Enum.at(formatted_working_times, 1)]
+
+      conn =
+        get(
+          conn,
+          Routes.working_time_path(conn, :index, user.id,
+            start: "2050-10-10T00:00:00Z",
+            end: "2055-10-10T00:00:00Z"
+          )
+        )
+
+      assert json_response(conn, 200)["data"] == []
     end
   end
 
@@ -75,31 +244,33 @@ defmodule TodolistWeb.WorkingTimeControllerTest do
     end
   end
 
-  # describe "create working_time" do
-  #   test "renders working_time when data is valid", %{conn: conn} do
-  #     user = user_fixture()
+  describe "create working_time" do
+    test "renders working_time when data is valid", %{conn: conn} do
+      user = user_fixture()
 
-  #     conn =
-  #       post(conn, Routes.working_time_path(conn, :create, user.id),
-  #         working_time: %{end: "~U[2022-10-24T09:38:00Z]", start: "~U[2022-10-24 09:38:00Z]"}
-  #       )
+      conn =
+        post(conn, Routes.working_time_path(conn, :create, user.id), working_time: @create_attrs)
 
-  #     assert %{"id" => id} = json_response(conn, 201)["data"]
+      assert %{"id" => id} = json_response(conn, 201)["data"]
 
-  #     # conn = get(conn, Routes.working_time_path(conn, :show, id))
+      conn = get(conn, Routes.working_time_path(conn, :show, user.id, id))
 
-  #     # assert %{
-  #     #          "id" => ^id,
-  #     #          "end" => "2022-10-24T09:38:00Z",
-  #     #          "start" => "2022-10-24T09:38:00Z"
-  #     #        } = json_response(conn, 200)["data"]
-  #   end
+      assert %{
+               "id" => ^id,
+               "end" => "2022-10-24T09:38:00Z",
+               "start" => "2022-10-24T09:38:00Z"
+             } = json_response(conn, 200)["data"]
+    end
 
-  #   # test "renders errors when data is invalid", %{conn: conn} do
-  #   #   conn = post(conn, Routes.working_time_path(conn, :create), working_time: @invalid_attrs)
-  #   #   assert json_response(conn, 422)["errors"] != %{}
-  #   # end
-  # end
+    test "renders errors when data is invalid", %{conn: conn} do
+      user = user_fixture()
+
+      conn =
+        post(conn, Routes.working_time_path(conn, :create, user.id), working_time: @invalid_attrs)
+
+      assert json_response(conn, 422)["errors"] != %{}
+    end
+  end
 
   describe "update working_time" do
     setup [:create_user_and_working_time]
@@ -152,5 +323,16 @@ defmodule TodolistWeb.WorkingTimeControllerTest do
     user = user_fixture()
     working_time = working_time_fixture(%{user_id: user.id})
     %{user: user, working_time: working_time}
+  end
+
+  defp working_times_to_maps(working_times, user_id) do
+    Enum.map(working_times, fn w ->
+      %{
+        "id" => w.id,
+        "user_id" => user_id,
+        "start" => DateTime.to_iso8601(w.start),
+        "end" => DateTime.to_iso8601(w.end)
+      }
+    end)
   end
 end
