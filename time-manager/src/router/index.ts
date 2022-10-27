@@ -1,8 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import ClockManager from '@/components/features/Clock/Clock.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/clocks',
+      name: 'clock',
+      component: ClockManager
+    },
     // {
     //   path: '/',
     //   name: 'home',
