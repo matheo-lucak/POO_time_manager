@@ -11,6 +11,8 @@ logs:
 
 test: api-test app-test
 
+setup: api-setup
+
 ##############################
 ##########   API    ##########
 ##############################
@@ -21,14 +23,25 @@ api-build:
 api-shell:
 	docker-compose run --rm api bash
 
-api-db-reset:
-	docker-compose run api mix ecto.reset
-
-api-start-iteractive:
-	docker-compose run --rm --service-ports api iex -S mix phx.server
-
 api-test:
-	MIX_ENV=test docker-compose run api mix test
+	MIX_ENV=test docker-compose run --rm api mix test
+
+api-setup: api-build api-install api-compile api-db-setup
+
+api-install:
+	docker-compose run --rm api mix deps.get
+
+api-compile:
+	docker-compose run --rm api bash -c "mix do compile, phx.digest"
+
+api-db-setup:
+	docker-compose run --rm api mix ecto.setup
+
+api-db-reset:
+	docker-compose run --rm api mix ecto.reset
+
+api-start-interactive:
+	docker-compose run --rm --service-ports api iex -S mix phx.server
 
 ##############################
 ##########   APP    ##########
