@@ -75,31 +75,32 @@ defmodule TodolistWeb.WorkingTimeControllerTest do
     end
   end
 
-  # describe "create working_time" do
-  #   test "renders working_time when data is valid", %{conn: conn} do
-  #     user = user_fixture()
+  describe "create working_time" do
+    test "renders working_time when data is valid", %{conn: conn} do
+      user = user_fixture()
 
-  #     conn =
-  #       post(conn, Routes.working_time_path(conn, :create, user.id),
-  #         working_time: %{end: "~U[2022-10-24T09:38:00Z]", start: "~U[2022-10-24 09:38:00Z]"}
-  #       )
+      conn =
+        post(conn, Routes.working_time_path(conn, :create, user.id), working_time: @create_attrs)
 
-  #     assert %{"id" => id} = json_response(conn, 201)["data"]
+      assert %{"id" => id} = json_response(conn, 201)["data"]
 
-  #     # conn = get(conn, Routes.working_time_path(conn, :show, id))
+      conn = get(conn, Routes.working_time_path(conn, :show, user.id, id))
 
-  #     # assert %{
-  #     #          "id" => ^id,
-  #     #          "end" => "2022-10-24T09:38:00Z",
-  #     #          "start" => "2022-10-24T09:38:00Z"
-  #     #        } = json_response(conn, 200)["data"]
-  #   end
+      assert %{
+               "id" => ^id,
+               "end" => "2022-10-24T09:38:00Z",
+               "start" => "2022-10-24T09:38:00Z"
+             } = json_response(conn, 200)["data"]
+    end
 
-  #   # test "renders errors when data is invalid", %{conn: conn} do
-  #   #   conn = post(conn, Routes.working_time_path(conn, :create), working_time: @invalid_attrs)
-  #   #   assert json_response(conn, 422)["errors"] != %{}
-  #   # end
-  # end
+    test "renders errors when data is invalid", %{conn: conn} do
+      user = user_fixture()
+      conn =
+        post(conn, Routes.working_time_path(conn, :create, user.id), working_time: @invalid_attrs)
+
+      assert json_response(conn, 422)["errors"] != %{}
+    end
+  end
 
   describe "update working_time" do
     setup [:create_user_and_working_time]
