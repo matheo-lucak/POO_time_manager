@@ -6,10 +6,10 @@ export default class AxiosServices
 
     constructor() {
         this.axiosClient = axios.create({
-            baseURL: "http://localhost:4000"
+            baseURL: "http://localhost:4000/api"
         });
     }
-    public async get(url: string, queryParams: any) : Promise<any>
+    public async get(url: string, queryParams : any) : Promise<any>
     {
         return await this.axiosClient.get(url, queryParams);
     }
