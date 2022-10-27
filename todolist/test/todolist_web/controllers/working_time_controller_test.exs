@@ -6,6 +6,7 @@ defmodule TodolistWeb.WorkingTimeControllerTest do
 
   alias Todolist.TimeManagement.WorkingTime
   alias Todolist.TestUtils
+  alias Todolist.Account
 
   @create_attrs %{
     end: ~U[2022-10-24 09:38:00Z],
@@ -220,6 +221,14 @@ defmodule TodolistWeb.WorkingTimeControllerTest do
 
       assert json_response(conn, 200)["data"] == []
     end
+
+    test "lists all working_times of unknown user", %{conn: conn} do
+      user = user_fixture()
+
+      assert_raise Account.UserNotFoundError, fn ->
+        get(conn, Routes.working_time_path(conn, :index, user.id + 1))
+      end
+    end
   end
 
   describe "show" do
@@ -241,6 +250,14 @@ defmodule TodolistWeb.WorkingTimeControllerTest do
       wt = working_time_fixture(%{user_id: user.id})
       conn = get(conn, Routes.working_time_path(conn, :show, user.id, wt.id + 1))
       assert json_response(conn, 200)["data"] == nil
+    end
+
+    test "Show one user working time. Unknown user", %{conn: conn} do
+      user = user_fixture()
+
+      assert_raise Account.UserNotFoundError, fn ->
+        get(conn, Routes.working_time_path(conn, :show, user.id + 1, 1))
+      end
     end
   end
 
@@ -269,6 +286,14 @@ defmodule TodolistWeb.WorkingTimeControllerTest do
         post(conn, Routes.working_time_path(conn, :create, user.id), working_time: @invalid_attrs)
 
       assert json_response(conn, 422)["errors"] != %{}
+    end
+
+    test "Create working time for unknown user", %{conn: conn} do
+      user = user_fixture()
+
+      assert_raise Account.UserNotFoundError, fn ->
+        post(conn, Routes.working_time_path(conn, :create, user.id + 1), working_time: @create_attrs)
+      end
     end
   end
 

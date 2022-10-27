@@ -4,6 +4,7 @@ defmodule Todolist.Account do
   """
 
   import Ecto.Query, warn: false
+  import Plug
   alias Todolist.Repo
 
   alias Todolist.Account.User
@@ -63,6 +64,25 @@ defmodule Todolist.Account do
 
   """
   def get_user(id), do: Repo.get(User, id)
+
+  defmodule UserNotFoundError do
+    defexception message: "User not found"
+  end
+
+  defimpl Plug.Exception, for: UserNotFoundError do
+    def status(_exception), do: 404
+  end
+
+  @doc """
+  Verify if a user exists
+  Raises UserNotFoundError if user has been found
+  """
+  def verify_user!(id) do
+    case Repo.get(User, id) do
+      nil -> raise UserNotFoundError
+      user -> user
+    end
+  end
 
   @doc """
   Creates a user.
