@@ -1,7 +1,7 @@
 <template>
     <header class="header-container" >
-      <div class=" toolbar flex-row middle space-around">
-        <AppSidebar />
+      <div class="toolbar flex-row middle space-around">
+        <AppSidebarMobile v-if="isMobile"/>
         <nav>
           <RouterLink to="/">Home</RouterLink>
         </nav>
@@ -11,17 +11,23 @@
 </template>
 
 <script lang="ts">
+import AppSidebarMobile from '@/components/shared/AppSidebarMobile.vue';
 import AppSidebar from '@/components/shared/AppSidebar.vue';
+import { mobileStore } from '@/core/stores/mobile';
 
 export default {
-  data() {
-    return {
-      
+    data() {
+        return {
+            isMobile: false
+        }
+    },
+    mounted() {
+        // mobileStore.getMobile()
+    },
+    components: {
+        AppSidebarMobile,
+        AppSidebar
     }
-  },
-  components: {
-    AppSidebar,
-  }
 }
 </script>
 
@@ -38,7 +44,7 @@ export default {
 
 .toolbar {
   height: 100%;
-  max-width: 1140px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 .toolbar-border {
