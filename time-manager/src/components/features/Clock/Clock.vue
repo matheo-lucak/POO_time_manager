@@ -4,27 +4,26 @@
 
   <div id="clock">
 
-    <div v-if="clockStore.clock.status === true">ClockActivated</div>
-    <button v-on:click="clockInFunction">ClockIn</button>
-    <img v-if="clockIn === true" :src=image alt="Clock is ticking"/>
+    <h1>Hello!</h1>
+    <h2><Timer  :date="clockStore.getClock.time"/> </h2>
+    <div v-if="clockStore.getClock.status === true">ClockActivated</div>
+    <div v-if="clockStore.clock.status === true">WithoutGetter</div>
+    <button v-on:click="clockStore.submitClock(this.userID)">Submit</button>
   </div>
 </template>
 
 <script lang="ts">
 
 import { useClockStore } from "@/core/stores/clock.store";
+import { useUserStore }  from "@/core/stores/user.store"
 import { defineComponent } from "vue"
-import ClocksServices from "@/core/api/clocks.service";
-import type {Clock} from "@/core/interfaces/clock.interface";
+import Timer from "./components/Timer.vue"
 
 export default defineComponent( {
   name: 'ClockManager',
-  props: [
-      "userID"
-  ],
   data() {
     return {
-      userID: 0,
+      userID: 1,
       clockIn: true
     }
   },
@@ -33,9 +32,15 @@ export default defineComponent( {
     return { clockStore }
   },
 
-  methods: {
-
-  }
+  components: {
+    Timer
+  },
+  beforeMount() {
+    const { fetchClock } = useClockStore();
+    const { getUserID } = useUserStore();
+    this.userID = getUserID;
+    fetchClock(this.userID);
+  },
 })
 
 </script>
