@@ -14,21 +14,23 @@
 import AppSidebarMobile from '@/components/shared/AppSidebarMobile.vue';
 import AppSidebar from '@/components/shared/AppSidebar.vue';
 import { mobileStore } from '@/core/stores/mobile';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
     data() {
         return {
             isMobile: false
         }
     },
-    mounted() {
-        // mobileStore.getMobile()
+    beforeMount() {
+        const { getMobile } = mobileStore();
+        this.isMobile = getMobile;
     },
     components: {
         AppSidebarMobile,
         AppSidebar
     }
-}
+})
 </script>
 
 <style scoped>
