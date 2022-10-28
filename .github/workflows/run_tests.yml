@@ -44,4 +44,4 @@ jobs:
         run: make stop
 
       - name: Reset db
-        run: make db-reset
+        run: make api-db-reset

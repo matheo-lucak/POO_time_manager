@@ -4,31 +4,52 @@ start:
 stop:
 	docker-compose down
 
-build:
-	docker-compose build api
-
-shell:
-	docker-compose run --rm api bash
+build: api-build
 
 logs:
 	docker-compose logs -f
 
-install:
-	docker-compose run --rm api mix deps.get
+test: api-test app-test
 
-compile:
-	docker-compose run --rm api bash -c "mix do compile, phx.digest"
+setup: api-setup
 
-db-setup:
-	docker-compose run --rm api mix ecto.setup
+##############################
+##########   API    ##########
+##############################
 
-db-reset:
-	docker-compose run --rm api mix ecto.reset
+api-build:
+	docker-compose build api
 
-start-interactive:
-	docker-compose run --rm --service-ports api iex -S mix phx.server
+api-shell:
+	docker-compose run --rm api bash
 
-test:
+api-test:
 	MIX_ENV=test docker-compose run --rm api mix test
 
-setup: build install compile db-setup
+api-setup: api-build api-install api-compile api-db-setup
+
+api-install:
+	docker-compose run --rm api mix deps.get
+
+api-compile:
+	docker-compose run --rm api bash -c "mix do compile, phx.digest"
+
+api-db-setup:
+	docker-compose run --rm api mix ecto.setup
+
+api-db-reset:
+	docker-compose run --rm api mix ecto.reset
+
+api-start-interactive:
+	docker-compose run --rm --service-ports api iex -S mix phx.server
+
+##############################
+##########   APP    ##########
+##############################
+
+app-build:
+	docker-compose build app
+
+app-test:
+	echo "Not implemented"
+#	docker-compose run --rm app npm run test:unit
