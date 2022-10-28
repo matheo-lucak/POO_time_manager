@@ -16,7 +16,7 @@ export const useWorkingtimesStore = defineStore('workingtimes', {
     fetchWorkingtimes(userId: number) {
       let workingtimeService = new WorkingtimesServices();
       workingtimeService.getAllWorkingtime(userId).then((response: any) => {
-        this.workingtimes = response.data;
+        this.workingtimes = response.data.data;
       })
       .catch((error: AxiosError) => console.log(error));
       

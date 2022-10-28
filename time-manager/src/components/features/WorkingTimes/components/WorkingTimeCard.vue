@@ -24,13 +24,15 @@
                 <p>{{hours}} h</p>
             </span>
         </div>
-
+        <button><router-link :to="{ name: 'workingtime', params: { id: id } }">Update</router-link></button>
     </div>
 
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from 'vue';
+
+export default defineComponent({
     data() {
         return {
             weekDay: "Fancy seing you here",
@@ -45,10 +47,14 @@ export default {
         end: {
             type: String,
             required: true
+        },
+        id: {
+            type: Number,
+            required: true
         }
     }
 
-}
+})
 </script>
 
 <style scoped>
