@@ -6,7 +6,7 @@ export default class UsersServices extends AxiosServices
 {
     public async getUser(userID: number) : Promise<User>
     {
-        return await this.get(`/users/${userID}`, null);
+        return this.get(`/users/${userID}`, null);
     }
 
     public async getAllUser(email: string | undefined, username: string | undefined) : Promise<User>
@@ -20,21 +20,21 @@ export default class UsersServices extends AxiosServices
         {
             queryParams.params.username = username;
         }
-        return await this.get(`/users`, queryParams)
+        return this.get(`/users`, queryParams)
     }
 
     public async postUser(userID: number) : Promise<User>
     {
-        return await this.post(`/users/${userID}`, null,null);
+        return this.post(`/users/${userID}`, null,null);
     }
 
     public async putUser(userID: number) : Promise<User>
     {
-        return await this.put(`/users/${userID}`, null, null);
+        return this.put(`/users/${userID}`, null, null);
     }
 
     public async deleteUser(userID: number) : Promise<User>
     {
-        return await this.delete(`/users/${userID}`, null);
+        return this.delete(`/users/${userID}`, null);
     }
 }

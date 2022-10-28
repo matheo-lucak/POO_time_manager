@@ -1,25 +1,37 @@
 <template>
+
     <div class="flex-wrap feature-container">
-        
-        <WorkingTimeCard v-for="workingtime in workingtimes" :start="workingtime.start" :end="workingtime.end"/>
+
+        <WorkingTimeCard v-for="workingtime in workingtimeStore.workingtimes" :start="workingtime.start" :end="workingtime.end"/>
 
     </div>
+    
 </template>
 
 <script lang="ts">
+import { useWorkingtimesStore } from '@/core/stores/workingtimes';
+import { defineComponent } from 'vue';
 import WorkingTimeCard from './components/WorkingTimeCard.vue';
 
-export default {
+export default defineComponent({
     data() {
         return {
-            workingtimes: [{ start: "yeeeee", end: "boiiii" }, { start: "yeeeee", end: "boiiii" }, { start: "yeeeee", end: "boiiii" }, { start: "yeeeee", end: "boiiii" }, { start: "yeeeee", end: "boiiii" },]
+            userId: 1,
         };
     },
-    mounted() {
-        // TODO get workingtimes
+    setup() {
+        const workingtimeStore = useWorkingtimesStore();
+        return {
+            workingtimeStore
+        }
+    },
+    beforeMount() {
+        const workingtimeStore = useWorkingtimesStore();
+
+        workingtimeStore.fetchWorkingtimes(this.userId);
     },
     components: { WorkingTimeCard }
-}
+})
 
 </script>
 
