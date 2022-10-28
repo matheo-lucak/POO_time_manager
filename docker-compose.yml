@@ -4,10 +4,9 @@ services:
     container_name: tm_db
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: todolist_dev
       POSTGRES_HOST_AUTH_METHOD: trust
+    env_file:
+      - .env
     image: 'postgres:11-alpine'
     restart: always
     volumes:
@@ -17,13 +16,22 @@ services:
     build: ./todolist
     depends_on:
       - db
-    environment:
-      MIX_ENV: dev
     env_file:
       - .env
     ports:
-      - '4000:4000'
+      - "${API_PORT}:${API_PORT}"
     volumes:
-      - ./todolist:/app
+      - ./todolist:/api
+  app:
+    container_name: tm_app
+    build: ./time-manager
+    depends_on:
+      - api
+    env_file:
+      - .env
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    volumes:
+      - ./time-manager:/app
 volumes:
   pgdata:

@@ -3,16 +3,21 @@ defmodule TodolistWeb.ClockController do
 
   alias Todolist.TimeManagement
   alias Todolist.TimeManagement.Clock
+  alias Todolist.Account
 
   action_fallback(TodolistWeb.FallbackController)
 
-  def index(conn, %{"userID" => userId}) do
-    clock = TimeManagement.get_user_clock(userId)
+  def index(conn, %{"userID" => userID}) do
+    Account.verify_user!(userID)
+
+    clock = TimeManagement.get_user_clock(userID)
     render(conn, "show.json", clock: clock)
   end
 
-  def toggle(conn, %{"userID" => userId}) do
-    with {:ok, %Clock{} = clock} <- TimeManagement.toggle_user_clock(userId) do
+  def toggle(conn, %{"userID" => userID}) do
+    Account.verify_user!(userID)
+
+    with {:ok, %Clock{} = clock} <- TimeManagement.toggle_user_clock(userID) do
       render(conn, "show.json", clock: clock)
     end
   end

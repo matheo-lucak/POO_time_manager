@@ -4,6 +4,7 @@ defmodule Todolist.Account do
   """
 
   import Ecto.Query, warn: false
+  import Plug
   alias Todolist.Repo
 
   alias Todolist.Account.User
@@ -22,20 +23,66 @@ defmodule Todolist.Account do
   end
 
   @doc """
-  Gets a single user.
-
-  Raises `Ecto.NoResultsError` if the User does not exist.
+  Returns the list of maybe filtered users.
 
   ## Examples
 
-      iex> get_user!(123)
-      %User{}
-
-      iex> get_user!(456)
-      ** (Ecto.NoResultsError)
+      iex> list_users()
+      [%User{}, ...]
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def list_users(filter \\ %{}) do
+    User
+    |> apply_filter(filter)
+    |> Repo.all()
+  end
+
+  defp apply_filter(query, filter) do
+    query
+    |> filter_email(filter["email"])
+    |> filter_username(filter["username"])
+  end
+
+  defp filter_email(query, nil), do: query
+  defp filter_email(query, email), do: from u in query, where: u.email == ^email
+
+  defp filter_username(query, nil), do: query
+  defp filter_username(query, username), do: from u in query, where: u.username == ^username
+
+  @doc """
+  Gets a single user.
+
+  Return nil if the User does not exist.
+
+  ## Examples
+
+      iex> get_user(123)
+      %User{}
+
+      iex> get_user(456)
+      nil
+
+  """
+  def get_user(id), do: Repo.get(User, id)
+
+  defmodule UserNotFoundError do
+    defexception message: "User not found"
+  end
+
+  defimpl Plug.Exception, for: UserNotFoundError do
+    def status(_exception), do: 404
+  end
+
+  @doc """
+  Verify if a user exists
+  Raises UserNotFoundError if user has been found
+  """
+  def verify_user!(id) do
+    case Repo.get(User, id) do
+      nil -> raise UserNotFoundError
+      user -> user
+    end
+  end
 
   @doc """
   Creates a user.
