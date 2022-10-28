@@ -1,6 +1,5 @@
 export interface Clock
 {
-    time: Date
+    time: string
     status: boolean
-    userID: number
 }

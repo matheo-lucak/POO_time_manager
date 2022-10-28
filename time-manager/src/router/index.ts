@@ -1,4 +1,5 @@
 import WorkingTimesVue from '@/components/features/WorkingTimes/WorkingTimes.vue'
+import ClockVue from '@/components/features/Clock/Clock.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import ClockManager from '@/components/features/Clock/Clock.vue'
 
@@ -18,7 +19,7 @@ const router = createRouter({
     {
       path: '/clocks',
       name: 'clock',
-      component: ClockManager
+      component: () =>ClockVue
     },
   ]
 })
