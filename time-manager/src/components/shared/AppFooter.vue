@@ -3,7 +3,7 @@
         
         <div class="footer-content">
             <div class="copyright">
-
+                Beep Boop I'm not a mod
             </div>
         </div>
         
