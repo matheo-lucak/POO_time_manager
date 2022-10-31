@@ -15,9 +15,9 @@
 <script lang="ts">
 
 import { useClockStore } from "@/core/stores/clock.store";
-import { useUserStore }  from "@/core/stores/user.store"
-import { defineComponent } from "vue"
-import Timer from "./components/Timer.vue"
+import { useUserStore }  from "@/core/stores/user.store";
+import { defineComponent } from "vue";
+import Timer from "./components/Timer.vue";
 
 export default defineComponent( {
   name: 'ClockManager',
@@ -40,6 +40,10 @@ export default defineComponent( {
     const { getUserID } = useUserStore();
     this.userID = getUserID;
     fetchClock(this.userID);
+  },
+
+  methods: {
+
   },
 })
 
