@@ -7,6 +7,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      redirect: '/workingtimes'
+    },
+    {
+      path: '/workingtimes',
       name: 'workingtimes',
       component: WorkingTimesVue
     },
