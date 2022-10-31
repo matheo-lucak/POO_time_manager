@@ -4,7 +4,7 @@
         <div class="flex-col gap-2 middle center">
             <button :class="activeWorkingtimes"><RouterLink to="/">Working Times</RouterLink></button>
             <button :class="activeClocks"><RouterLink to="/clocks">Clock !</RouterLink></button>
-            <button :class="activeCharts"><RouterLink to="/chart">See your charts</RouterLink></button>
+            <button :class="activeCharts"><RouterLink to="/charts">See your charts</RouterLink></button>
         </div>
     </div>
 </template>
