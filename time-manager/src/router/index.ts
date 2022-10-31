@@ -20,7 +20,7 @@ const router = createRouter({
       component: () => import('@/components/features/WorkingTimes/WorkingTime.vue')
     },
     {
-      path: '/chart-manager',
+      path: '/charts',
       name: 'chart-manager',
       component: () => import('@/components/features/ChartManager/ChartManager.vue')
     },

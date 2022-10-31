@@ -29,7 +29,7 @@ export default {
             return "";
         }, 
         activeWorkingtimes() {
-            if(this.currentPath.includes('workingtimes'))
+            if(this.currentPath.includes('workingtime'))
                 return "active";
             return "";
         }
