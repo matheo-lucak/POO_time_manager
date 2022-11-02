@@ -3,7 +3,7 @@ import type { Workingtime } from "@/core/interfaces/workingtime.interface";
 
 export default class WorkingtimesServices extends AxiosServices
 {
-    public async getWorkingtime(userID: number, id:string) : Promise<Workingtime>
+    public async getWorkingtime(userID: string, id: string) : Promise<Workingtime>
     {
         return this.get(`/workingtimes/${userID}/${id}`, null);
     }
@@ -13,9 +13,9 @@ export default class WorkingtimesServices extends AxiosServices
         return this.get(`/workingtimes/${userId}`, {})
     }
 
-    public async postWorkingtime(userID: number) : Promise<Workingtime>
+    public async postWorkingtime(userID: number, body: any) : Promise<Workingtime>
     {
-        return this.post(`/workingtimes/${userID}`, null,null);
+        return this.post(`/workingtimes/${userID}`,body ,null);
     }
 
     public async putWorkingtime(userID: number) : Promise<Workingtime>

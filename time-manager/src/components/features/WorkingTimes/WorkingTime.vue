@@ -21,7 +21,9 @@
         <div class="total">
             Heures travaillées : {{hoursBetween}}
         </div>
-
+        <div class="update-button">
+            <button @click="updateWorkingtime">Update</button>
+        </div>
     </div>
     
 </template>
@@ -29,21 +31,56 @@
 <script lang="ts">
 import Datepicker from 'vue3-datepicker';
 import { ref, defineComponent } from 'vue';
+import { useWorkingtimesStore } from '@/core/stores/workingtimes';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
     data() {
         return {
-            id: 0,
+            id: "",
+            userId: "",
+            workingTime: {
+                start: "",
+                end: ""
+            },
+            startDate: new Date(),
+            endDate: new Date()
         }
     },
     setup() {
-        const startDate = ref(new Date());
-        const endDate = ref(new Date());
         
-        return {
-            startDate,
-            endDate
-        }
+        // const { getWorkingtime } = useWorkingtimesStore();
+
+        // const route = useRoute();
+        // const id = <string>route.params.userId;
+        // const userId = <string>route.params.id;
+
+        // var response: any;
+        // getWorkingtime(userId, id).then((res: any) => {
+        //     response = res;
+        // })
+
+        // const startDate = ref(new Date(workingTime.start));
+        // const endDate = ref(new Date(workingTime.end));
+
+
+        // return {
+        //     startDate,
+        //     endDate,
+        // }
+    },
+    beforeMount() {
+        const { getWorkingtime } = useWorkingtimesStore();
+
+        this.id = <string>this.$route.params.userId;
+        this.userId = <string>this.$route.params.id;
+
+        getWorkingtime(this.userId, this.id).then((response: any) => {
+            this.workingTime = response.data.data;
+            this.startDate = new Date(this.workingTime.start);
+            this.endDate = new Date(this.workingTime.end);
+        }).catch(error => console.log(error));
+
     },
     computed: {
         getStartTime() {
@@ -69,6 +106,9 @@ export default defineComponent({
             result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
             return result;
         },
+        updateWorkingtime() {
+            
+        }
         
     }
 })

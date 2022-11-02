@@ -2,7 +2,7 @@
 
     <div class="flex-wrap feature-container">
 
-        <WorkingTimeCard v-for="workingtime in workingtimeStore.workingtimes" :id="workingtime.id" :start="workingtime.start" :end="workingtime.end"/>
+        <WorkingTimeCard v-for="workingtime in workingtimeStore.workingtimes" :userId="userId" :id="workingtime.id" :start="workingtime.start" :end="workingtime.end"/>
 
     </div>
     
