@@ -15,7 +15,7 @@ const router = createRouter({
       component: WorkingTimesVue
     },
     {
-      path: '/workingtime/:id',
+      path: '/workingtime/:userId/:id',
       name: 'workingtime',
       component: () => import('@/components/features/WorkingTimes/WorkingTime.vue')
     },

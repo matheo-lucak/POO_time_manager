@@ -25,7 +25,7 @@
             </span>
         </div>
         <div class="flex-row center" width="100%">
-            <button><router-link :to="{ name: 'workingtime', params: { id: id } }">Update</router-link></button>
+            <button><router-link :to="{ name: 'workingtime', params: { userId: userId, id: id } }">Update</router-link></button>
         </div>
         
     </div>
@@ -53,7 +53,12 @@ export default defineComponent({
         id: {
             type: Number,
             required: true
+        },
+        userId: {
+            type: Number,
+            required: true
         }
+        
     },
     computed: {
         getStartDate() {
