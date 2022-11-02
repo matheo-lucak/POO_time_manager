@@ -15,13 +15,10 @@ jobs:
         with:
           version: "1.29.2"
 
-      - name: Setup project
-        run: make setup
-
       - name: Run tests
         run: make test
 
-  build_and_run:
+  run_dev:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -34,14 +31,27 @@ jobs:
         with:
           version: "1.29.2"
 
-      - name: Setup project
-        run: make setup
-
-      - name: Run project
-        run: make start
+      - name: Run project as dev
+        run: make dev
 
       - name: Stop project
         run: make stop
 
-      - name: Reset db
-        run: make api-db-reset
+  run_prod:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: KengoTODA/actions-setup-docker-compose@main
+        with:
+          version: "1.29.2"
+
+      - name: Run project as prod
+        run: make prod
+
+      - name: Stop project
+        run: make stop

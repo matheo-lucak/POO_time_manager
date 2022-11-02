@@ -1,0 +1,10 @@
+version: '3.6'
+services:
+  api:
+    build:
+      target: app_test
+      context: ./todolist
+    environment:
+      - MIX_ENV=test
+    env_file:
+      - .env
