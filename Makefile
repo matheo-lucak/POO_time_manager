@@ -1,47 +1,33 @@
-start:
-	docker-compose up -d
+dev:
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d
+
+prod:
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 
 stop:
-	docker-compose down
-
-build: api-build
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml stop
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml stop
 
 logs:
 	docker-compose logs -f
 
 test: api-test app-test
 
-setup: api-setup
-
-##############################
-##########   API    ##########
-##############################
-
-api-build:
-	docker-compose build api
+##################################
+##########   DEV API    ##########
+##################################
 
 api-shell:
-	docker-compose run --rm api bash
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm api sh
 
 api-test:
-	MIX_ENV=test docker-compose run --rm api mix test
-
-api-setup: api-build api-install api-compile api-db-setup
-
-api-install:
-	docker-compose run --rm api mix deps.get
-
-api-compile:
-	docker-compose run --rm api bash -c "mix do compile, phx.digest"
+	docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm api mix test
 
 api-db-setup:
-	docker-compose run --rm api mix ecto.setup
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm api mix ecto.setup
 
 api-db-reset:
-	docker-compose run --rm api mix ecto.reset
-
-api-start-interactive:
-	docker-compose run --rm --service-ports api iex -S mix phx.server
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm api mix ecto.reset
 
 ##############################
 ##########   APP    ##########
