@@ -21,9 +21,9 @@ export const useWorkingtimesStore = defineStore('workingtimes', {
             .catch((error: AxiosError) => console.log(error));
         
         },
-        async getWorkingtime(userId: string, id: string) {
+        getWorkingtime(userId: string, id: string) {
             let workingtimeService = new WorkingtimesServices();
-            return await workingtimeService.getWorkingtime(userId, id);
+            return workingtimeService.getWorkingtime(userId, id);
         },
         updateWorkingtimes(workingtimes: Workingtime[]) {
             this.workingtimes = workingtimes;
