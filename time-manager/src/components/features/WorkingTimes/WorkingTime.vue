@@ -72,13 +72,17 @@ export default defineComponent({
     beforeMount() {
         const { getWorkingtime } = useWorkingtimesStore();
 
-        this.id = <string>this.$route.params.userId;
-        this.userId = <string>this.$route.params.id;
+        this.id = <string>this.$route.params.id;
+        this.userId = <string>this.$route.params.userId;
 
         getWorkingtime(this.userId, this.id).then((response: any) => {
+            
+            if(!response.data.data) return;
+
             this.workingTime = response.data.data;
             this.startDate = new Date(this.workingTime.start);
             this.endDate = new Date(this.workingTime.end);
+
         }).catch(error => console.log(error));
 
     },
