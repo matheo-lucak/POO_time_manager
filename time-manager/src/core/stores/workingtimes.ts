@@ -25,8 +25,27 @@ export const useWorkingtimesStore = defineStore('workingtimes', {
             let workingtimeService = new WorkingtimesServices();
             return workingtimeService.getWorkingtime(userId, id);
         },
-        updateWorkingtimes(workingtimes: Workingtime[]) {
-            this.workingtimes = workingtimes;
+        async updateWorkingtimes(id: number, start: Date, end: Date) {
+            let body = {
+                working_time: {
+                    start: start.toISOString(),
+                    end:  end.toISOString()
+                } 
+            }
+            let workingtimeService = new WorkingtimesServices();
+            let response: any = await workingtimeService.putWorkingtime(id, body);
+
+            if(!response || !response.data.data) {
+                return;
+            }
+
+            //Find and replace updated workingtime in store
+            let newWorkingtime = response.data.data;
+            let newWorkingtimes = this.workingtimes.filter(workingtime => workingtime.id !== newWorkingtime.id);
+            newWorkingtimes.push(newWorkingtime);
+            this.workingtimes = newWorkingtimes;
+
+            return newWorkingtime;
         },
         async postWorkingtime(userId: number, start: Date, end: Date) {
             let body = {

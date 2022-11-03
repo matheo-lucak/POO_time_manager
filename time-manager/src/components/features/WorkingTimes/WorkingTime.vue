@@ -22,7 +22,8 @@
             Heures travaillées : {{hoursBetween}}
         </div>
         <div class="update-button">
-            <button @click="updateWorkingtime">Update</button>
+            <button v-if="update" @click="updateWorkingtime">Save</button>
+            <button v-if="!update" @click="postWorkingtime">Save</button>
         </div>
     </div>
     
@@ -30,9 +31,9 @@
 
 <script lang="ts">
 import Datepicker from 'vue3-datepicker';
-import { ref, defineComponent } from 'vue';
+import { defineComponent } from 'vue';
 import { useWorkingtimesStore } from '@/core/stores/workingtimes';
-import { useRoute } from 'vue-router';
+// import { useRoute } from 'vue-router';
 
 export default defineComponent({
     data() {
@@ -44,7 +45,8 @@ export default defineComponent({
                 end: ""
             },
             startDate: new Date(),
-            endDate: new Date()
+            endDate: new Date(),
+            update: false
         }
     },
     setup() {
@@ -74,7 +76,10 @@ export default defineComponent({
 
         this.id = <string>this.$route.params.id;
         this.userId = <string>this.$route.params.userId;
-
+        
+        if(!this.id) return;
+        
+        this.update = true;
         getWorkingtime(this.userId, this.id).then((response: any) => {
             
             if(!response.data.data) return;
@@ -112,6 +117,9 @@ export default defineComponent({
         },
         updateWorkingtime() {
             
+        },
+        postWorkingtime() {
+
         }
         
     }

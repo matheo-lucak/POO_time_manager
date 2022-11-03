@@ -3,8 +3,10 @@ import { RouterView } from 'vue-router';
 import AppHeader from '@/components/shared/AppHeader.vue';
 import AppFooter from '@/components/shared/AppFooter.vue';
 import AppSidebar from '@/components/shared/AppSidebar.vue';
+import { defineComponent } from 'vue';
+import { useMobileStore } from '@/core/stores/mobile';
 
-export default {
+export default defineComponent({
     data() {
         return {
             isMobile: false
@@ -14,8 +16,24 @@ export default {
         AppHeader,
         AppFooter,
         AppSidebar,
+    },
+    computed:  {
+        getIsMobile() {
+            const { getMobile } = useMobileStore();
+            return getMobile;
+        }
+    },
+    mounted() {
+        const mobileStore = useMobileStore();
+        window.onresize = () => {
+            if(window.innerWidth < 720) {
+                mobileStore.updateIsMobile(true);
+                return;
+            }
+            mobileStore.updateIsMobile(false);
+        }
     }
-}
+})
 </script>
 
 <template>
@@ -23,7 +41,7 @@ export default {
     <div class="main-container">
         <AppHeader />
         <div class="main flex-row space-between">
-            <AppSidebar v-if="!isMobile"/>
+            <AppSidebar v-if="!getIsMobile"/>
             <div class="main-content">
                 <RouterView />
             </div>

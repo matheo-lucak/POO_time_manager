@@ -38,6 +38,8 @@ html, body {
   width: 100%;
   background-color: #fff;
   padding: 78px;
+  height: calc(100vh - 196px);
+  overflow: auto;
 }
 
 footer {

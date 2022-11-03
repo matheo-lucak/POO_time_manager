@@ -20,6 +20,11 @@ const router = createRouter({
       component: () => import('@/components/features/WorkingTimes/WorkingTime.vue')
     },
     {
+      path: '/workingtime/:userId',
+      name: 'create-workingtime',
+      component: () => import('@/components/features/WorkingTimes/WorkingTime.vue')
+    },
+    {
       path: '/charts',
       name: 'chart-manager',
       component: () => import('@/components/features/ChartManager/ChartManager.vue')

@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
-export const mobileStore = defineStore('mobile', {
+export const useMobileStore = defineStore('mobile', {
   state: () => ({ 
     isMobile: false 
   }),

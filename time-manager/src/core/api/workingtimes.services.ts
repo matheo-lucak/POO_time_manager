@@ -18,14 +18,14 @@ export default class WorkingtimesServices extends AxiosServices
         return this.post(`/workingtimes/${userID}`,body ,null);
     }
 
-    public async putWorkingtime(userID: number) : Promise<Workingtime>
+    public async putWorkingtime(id: number, body: any) : Promise<Workingtime>
     {
-        return this.put(`/workingtimes/${userID}`, null, null);
+        return this.put(`/workingtimes/${id}`, body, null);
     }
 
-    public async deleteWorkingtime(userID: number) : Promise<Workingtime>
+    public async deleteWorkingtime(id: number) : Promise<Workingtime>
     {
-        return this.delete(`/workingtimes/${userID}`, null);
+        return this.delete(`/workingtimes/${id}`, null);
     }
 
 }

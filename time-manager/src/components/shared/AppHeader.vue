@@ -1,19 +1,19 @@
 <template>
     <header class="header-container" >
-      <div class="toolbar flex-row middle space-around">
-        <AppSidebarMobile v-if="isMobile"/>
-        <nav>
-          <RouterLink to="/">Home</RouterLink>
-        </nav>
-      </div>
-      <div class="toolbar-border"></div>
+        <div class="toolbar flex-row middle space-around">
+            <AppSidebarMobile v-if="getIsMobile"/>
+            <nav>
+                <RouterLink to="/">Time Manager</RouterLink>
+            </nav>
+        </div>
+        <div class="toolbar-border"></div>
     </header>
 </template>
 
 <script lang="ts">
 import AppSidebarMobile from '@/components/shared/AppSidebarMobile.vue';
 import AppSidebar from '@/components/shared/AppSidebar.vue';
-import { mobileStore } from '@/core/stores/mobile';
+import { useMobileStore } from '@/core/stores/mobile';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -22,9 +22,15 @@ export default defineComponent({
             isMobile: false
         }
     },
-    beforeMount() {
-        const { getMobile } = mobileStore();
+    mounted() {
+        const { getMobile } = useMobileStore();
         this.isMobile = getMobile;
+    },
+    computed: {
+        getIsMobile() {
+            const { getMobile } = useMobileStore();
+            return getMobile;
+        }
     },
     components: {
         AppSidebarMobile,
@@ -55,6 +61,10 @@ export default defineComponent({
   opacity: 0.1;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)), linear-gradient(to bottom, #000, rgba(0, 0, 0, 0));
 
+}
+
+a {
+    text-decoration: none;
 }
 
 </style>
