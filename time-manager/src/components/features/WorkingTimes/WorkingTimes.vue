@@ -28,7 +28,7 @@ export default defineComponent({
     beforeMount() {
         const workingtimeStore = useWorkingtimesStore();
 
-        workingtimeStore.fetchWorkingtimes(this.userId);
+        workingtimeStore.fetchWorkingtimes(this.userId);      
     },
     components: { WorkingTimeCard }
 })
