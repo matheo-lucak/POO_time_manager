@@ -16,11 +16,10 @@ export default defineComponent({
     ],
     data() {
         return {
-            mounted: 'HOY'  
+             
         }
     },
     mounted() {
-        console.log(this.mounted)
     },
     components: {
         TimePieChart
