@@ -1,14 +1,17 @@
-
-
 <template>
 
   <div id="clock">
 
-    <h1>Hello!</h1>
-    <h2><Timer  :date="clockStore.getClock.time"/> </h2>
+    <h1>Hello! This is the clock page.</h1>
+    <h2><Timer :date="clockStore.getClock.time" :status="clockStore.getClock.status"/> </h2>
     <div v-if="clockStore.getClock.status === true">ClockActivated</div>
     <div v-if="clockStore.clock.status === true">WithoutGetter</div>
-    <button v-on:click="clockStore.submitClock(this.userID)">Submit</button>
+    <div class="buttonbox">
+      <button v-on:click="clockStore.refreshClock(this.userID)">RefreshClock</button>
+
+      <button v-on:click="clockStore.submitClock(this.userID)">ClockIn</button>
+    </div>
+
   </div>
 </template>
 
@@ -48,3 +51,21 @@ export default defineComponent( {
 })
 
 </script>
+
+<style>
+.buttonbox {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  transform: translateY(100px);
+}
+.buttonbox button
+{
+  padding: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: baseline;
+}
+</style>
