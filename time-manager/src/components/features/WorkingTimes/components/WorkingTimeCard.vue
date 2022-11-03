@@ -88,8 +88,8 @@ export default defineComponent({
             let millisecondsPerHour = 60 * 60 * 1000;
             let diff = this.treatAsUTC(endDate).getTime() - this.treatAsUTC(startDate).getTime();
             if(diff > millisecondsPerHour)
-                return diff / millisecondsPerHour + ' h';
-            return diff / (millisecondsPerHour / 60) + ' min';
+                return Math.round(diff / millisecondsPerHour) + ' h';
+            return Math.round(diff / (millisecondsPerHour / 60)) + ' min';
         }
     }
 

@@ -25,7 +25,7 @@ export const useWorkingtimesStore = defineStore('workingtimes', {
             let workingtimeService = new WorkingtimesServices();
             return workingtimeService.getWorkingtime(userId, id);
         },
-        async updateWorkingtimes(id: number, start: Date, end: Date) {
+        async updateWorkingtime(id: string, start: Date, end: Date) {
             let body = {
                 working_time: {
                     start: start.toISOString(),
@@ -47,7 +47,7 @@ export const useWorkingtimesStore = defineStore('workingtimes', {
 
             return newWorkingtime;
         },
-        async postWorkingtime(userId: number, start: Date, end: Date) {
+        async postWorkingtime(userId: string, start: Date, end: Date) {
             let body = {
                 working_time: {
                     start: start.toISOString(),

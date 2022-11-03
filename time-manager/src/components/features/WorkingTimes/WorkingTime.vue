@@ -1,6 +1,14 @@
 <template>
 
     <div class="feature-container">
+        <div class="messages">
+            <div  v-if="error" class="error">
+                It doesnt work BOZO
+            </div>
+            <div  v-if="updated" class="updated">
+                It works BOZO
+            </div>
+        </div>
 
         <div class="time-pick" id="start">
             <div>
@@ -22,7 +30,7 @@
             Heures travaillées : {{hoursBetween}}
         </div>
         <div class="update-button">
-            <button v-if="update" @click="updateWorkingtime">Save</button>
+            <button v-if="update" @click="updateWorkingtime">Save changes</button>
             <button v-if="!update" @click="postWorkingtime">Save</button>
         </div>
     </div>
@@ -46,30 +54,10 @@ export default defineComponent({
             },
             startDate: new Date(),
             endDate: new Date(),
-            update: false
+            update: false,
+            updated: false,
+            error: false,
         }
-    },
-    setup() {
-        
-        // const { getWorkingtime } = useWorkingtimesStore();
-
-        // const route = useRoute();
-        // const id = <string>route.params.userId;
-        // const userId = <string>route.params.id;
-
-        // var response: any;
-        // getWorkingtime(userId, id).then((res: any) => {
-        //     response = res;
-        // })
-
-        // const startDate = ref(new Date(workingTime.start));
-        // const endDate = ref(new Date(workingTime.end));
-
-
-        // return {
-        //     startDate,
-        //     endDate,
-        // }
     },
     beforeMount() {
         const { getWorkingtime } = useWorkingtimesStore();
@@ -102,8 +90,8 @@ export default defineComponent({
             let millisecondsPerHour = 60 * 60 * 1000;
             let diff = this.treatAsUTC(this.endDate.toString()).getTime() - this.treatAsUTC(this.startDate.toString()).getTime();
             if(diff > millisecondsPerHour)
-                return diff / millisecondsPerHour + ' h';
-            return diff / (millisecondsPerHour / 60) + ' min';
+                return Math.round(diff / millisecondsPerHour) + ' h';
+            return Math.round(diff / (millisecondsPerHour / 60)) + ' min';
         }
     },
     components: {
@@ -116,10 +104,16 @@ export default defineComponent({
             return result;
         },
         updateWorkingtime() {
-            
+            const { updateWorkingtime } = useWorkingtimesStore();
+            updateWorkingtime(this.id, this.startDate, this.endDate).then((response) => {
+                this.updated = true;
+            }).catch(error => this.error = true);
         },
         postWorkingtime() {
-
+            const { postWorkingtime } = useWorkingtimesStore();
+            postWorkingtime(this.userId, this.startDate, this.endDate).then((response) => {
+                this.updated = true;
+            }).catch(error => this.error = true);
         }
         
     }
