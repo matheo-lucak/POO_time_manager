@@ -1,14 +1,16 @@
 <template>
 
-<div class="chart-container">
-
-</div>
+    <div class="chart-container">
+        <TimePieChart />
+    </div>
 
 </template>
 
 <script lang="ts">
+import TimePieChart from '@/components/features/ChartManager/components/TimePieChart.vue';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
     props: [
 
     ],
@@ -19,8 +21,11 @@ export default {
     },
     mounted() {
         console.log(this.mounted)
+    },
+    components: {
+        TimePieChart
     }
-}
+})
 </script>
 
 <style scoped>
