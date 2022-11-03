@@ -5,8 +5,9 @@
 <script lang="ts">
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import { PieChart } from 'echarts/charts';
+import { BarChart } from 'echarts/charts';
 import {
+    GridComponent,
     TitleComponent,
     TooltipComponent,
     LegendComponent,
@@ -15,8 +16,9 @@ import VChart from 'vue-echarts';
 import { ref, defineComponent } from 'vue';
 
 use([
+    GridComponent,
     CanvasRenderer,
-    PieChart,
+    BarChart,
     TitleComponent,
     TooltipComponent,
     LegendComponent,
@@ -29,40 +31,19 @@ export default defineComponent({
     setup() {
         const option = ref({
             title: {
-                text: 'Traffic Sources',
-                left: 'center',
+                text: 'Working Times'
             },
-            tooltip: {
-                trigger: 'item',
-                formatter: '{a} <br/>{b} : {c} ({d}%)',
+            tooltip: {},
+            legend: {},
+            xAxis: {
+                data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
             },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                data: ['Direct', 'Email', 'Ad Networks', 'Video Ads', 'Search Engines'],
-            },
-            series: [
-                {
-                    name: 'Traffic Sources',
-                    type: 'pie',
-                    radius: '55%',
-                    center: ['50%', '60%'],
-                    data: [
-                        { value: 335, name: 'Direct' },
-                        { value: 310, name: 'Email' },
-                        { value: 234, name: 'Ad Networks' },
-                        { value: 135, name: 'Video Ads' },
-                        { value: 1548, name: 'Search Engines' },
-                    ],
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)',
-                        },
-                    },
-                },
-            ],
+            yAxis: {},
+            series: [{
+                name: "Working Times",
+                type: "bar",
+                data: [5, 20, 36, 10, 10, 20, 4]
+            }]
         });
 
         return { option };
@@ -72,7 +53,8 @@ export default defineComponent({
   
 <style scoped>
 .chart {
-    height: 100vh;
+    height: 100%;
+    width: 100%;
 }
 </style>
   

@@ -29,7 +29,7 @@ export default defineComponent({
     setup() {
         const option = ref({
             title: {
-                text: 'Traffic Sources',
+                text: 'Working Times',
                 left: 'center',
             },
             tooltip: {
@@ -39,20 +39,20 @@ export default defineComponent({
             legend: {
                 orient: 'vertical',
                 left: 'left',
-                data: ['Direct', 'Email', 'Ad Networks', 'Video Ads', 'Search Engines'],
+                data: ['Never', 'Gonna', 'GIve', 'You', 'Up'],
             },
             series: [
                 {
-                    name: 'Traffic Sources',
+                    name: 'Working Times',
                     type: 'pie',
                     radius: '55%',
                     center: ['50%', '60%'],
                     data: [
-                        { value: 335, name: 'Direct' },
-                        { value: 310, name: 'Email' },
-                        { value: 234, name: 'Ad Networks' },
-                        { value: 135, name: 'Video Ads' },
-                        { value: 1548, name: 'Search Engines' },
+                        { value: 335, name: 'Never' },
+                        { value: 310, name: 'Gonna' },
+                        { value: 234, name: 'GIve' },
+                        { value: 135, name: 'You' },
+                        { value: 1548, name: 'Up' },
                     ],
                     emphasis: {
                         itemStyle: {
@@ -72,7 +72,8 @@ export default defineComponent({
   
 <style scoped>
 .chart {
-    height: 100vh;
+    height: 100%;
+    width: 100%;
 }
 </style>
   

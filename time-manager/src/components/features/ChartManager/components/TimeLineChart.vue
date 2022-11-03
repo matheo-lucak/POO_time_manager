@@ -5,8 +5,9 @@
 <script lang="ts">
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import { PieChart } from 'echarts/charts';
+import { LineChart } from 'echarts/charts';
 import {
+    GridComponent,
     TitleComponent,
     TooltipComponent,
     LegendComponent,
@@ -15,8 +16,9 @@ import VChart from 'vue-echarts';
 import { ref, defineComponent } from 'vue';
 
 use([
+    GridComponent,
     CanvasRenderer,
-    PieChart,
+    LineChart,
     TitleComponent,
     TooltipComponent,
     LegendComponent,
@@ -26,42 +28,75 @@ export default defineComponent({
     components: {
         VChart,
     },
-    setup() {
+    props: {
+        data: {
+            type: Array<Number>,
+            default: [820, 932, 901, 934, 1290, 1330, 1320]
+        }
+    },
+    setup(props) {
         const option = ref({
             title: {
-                text: 'Traffic Sources',
-                left: 'center',
+                text: 'Working Times',
             },
-            tooltip: {
-                trigger: 'item',
-                formatter: '{a} <br/>{b} : {c} ({d}%)',
+            tooltip: {},
+            legend: {},
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                axisTick: {
+                    show: true,
+                },
+                axisLabel: {
+                    color: "#6470A0",
+                    fontSize: '13',
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "#3C4462",
+                        width: '2',
+                    },
+                },
+
+                data: ['Monday', 'Tuesday', 'Never', ' Gonna', 'Give', 'You', 'Up'],
             },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                data: ['Direct', 'Email', 'Ad Networks', 'Video Ads', 'Search Engines'],
+            yAxis: {
+                type: 'value',
+                
+                axisTick: {
+                    show: true,
+                },
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed',
+                        color:'#dee2f3',
+                        width: '1',
+                    },
+                },
             },
             series: [
                 {
-                    name: 'Traffic Sources',
-                    type: 'pie',
-                    radius: '55%',
-                    center: ['50%', '60%'],
-                    data: [
-                        { value: 335, name: 'Direct' },
-                        { value: 310, name: 'Email' },
-                        { value: 234, name: 'Ad Networks' },
-                        { value: 135, name: 'Video Ads' },
-                        { value: 1548, name: 'Search Engines' },
-                    ],
+                    type: 'line',
+                    smooth: false,
+                    symbolSize: 10,
                     emphasis: {
                         itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)',
+                            fill: "#f588b0",
+                            stroke: "#f588b0",
+                            opacity: 0.5,
                         },
                     },
-                },
+                    lineStyle: {
+                        width: 3,
+                        color: "#f588b0",
+                    },
+                    itemStyle: {
+                        color: "#f588b0",
+                    },
+                    data: [820, 932, 901, 934, 1290, 1330, 1320],
+                    // [props.data]
+                }
+
             ],
         });
 
@@ -72,7 +107,8 @@ export default defineComponent({
   
 <style scoped>
 .chart {
-    height: 100vh;
+    height: 100%;
+    width: 100%;
 }
 </style>
   
