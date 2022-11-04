@@ -28,6 +28,12 @@ export default defineComponent({
     components: {
         VChart,
     },
+    props: {
+        data: {
+            type: Array<Number>,
+            default: [820, 932, 901, 934, 1290, 1330, 1320]
+        }
+    },
     setup() {
         const option = ref({
             title: {
