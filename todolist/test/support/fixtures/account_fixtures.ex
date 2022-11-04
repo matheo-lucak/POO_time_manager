@@ -12,7 +12,9 @@ defmodule Todolist.AccountFixtures do
       attrs
       |> Enum.into(%{
         email: "some@email.fr",
-        username: "some username"
+        username: "some username",
+        password: "super secure password",
+        password_confirmation: "super secure password"
       })
       |> Todolist.Account.create_user()
 

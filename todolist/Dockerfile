@@ -28,7 +28,7 @@ FROM alpine:3.14.2 AS app_prod
 
 ARG MIX_ENV=prod
 ARG DATABASE_URL="postgres://postgres:postgres@db:5432/todolist_dev"
-ARG SECRET_KEY_BASE=${SECRET_KEY_BASE}
+ARG SECRET_KEY_BASE="${SECRET_KEY_BASE}"
 ENV PORT="${API_PORT}"
 EXPOSE "${PORT}"
 
@@ -70,29 +70,27 @@ ARG MIX_ENV=dev
 ENV PORT="${API_PORT}"
 EXPOSE "${API_PORT}"
 
+RUN echo ${MIX_ENV}
+
 RUN apt-get update && \
-    apt-get install -y postgresql-client
+    apt-get install -y postgresql-client inotify-tools
 
 RUN mix local.hex --force
+
+WORKDIR /api
 
 COPY mix.exs .
 COPY mix.lock .
 
 RUN mix local.hex --force
 RUN mix local.rebar --force
-
-WORKDIR /api
-
-# Run the Phoenix app
-ENTRYPOINT ["bash", "./entrypoint.sh"]
+RUN mix deps.update --all
 
 # ---- Application Stage ----
-FROM base as app_test
+FROM app_dev as app_test
 
 ARG MIX_ENV=test
 ENV PORT="${API_PORT}"
 EXPOSE "${API_PORT}"
 
-COPY test ./test
-
-WORKDIR /app
+WORKDIR /api

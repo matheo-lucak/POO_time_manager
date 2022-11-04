@@ -4,23 +4,9 @@ defmodule Todolist.Account do
   """
 
   import Ecto.Query, warn: false
-  import Plug
   alias Todolist.Repo
 
   alias Todolist.Account.User
-
-  @doc """
-  Returns the list of users.
-
-  ## Examples
-
-      iex> list_users()
-      [%User{}, ...]
-
-  """
-  def list_users do
-    Repo.all(User)
-  end
 
   @doc """
   Returns the list of maybe filtered users.
@@ -69,7 +55,7 @@ defmodule Todolist.Account do
     defexception message: "User not found"
   end
 
-  defimpl Plug.Exception, for: UserNotFoundError do
+  defimpl Plug.Exception, for: Account.UserNotFoundError do
     def status(_exception), do: 404
   end
 

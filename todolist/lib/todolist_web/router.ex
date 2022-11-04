@@ -1,5 +1,6 @@
 defmodule TodolistWeb.Router do
   use TodolistWeb, :router
+  use Pow.Phoenix.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -12,17 +13,24 @@ defmodule TodolistWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Todolist.Auth.AuthFlow, otp_app: :todolist
   end
 
-  # scope "/", TodolistWeb do
-  #   pipe_through :browser
+  pipeline :api_protected do
+    plug Pow.Plug.RequireAuthenticated,
+    error_handler: TodolistWeb.AuthErrorHandler
+  end
 
-  #   get "/", PageController, :index
-  # end
 
-  # Other scopes may use custom stacks.
-  scope "/api", TodolistWeb do
+  scope "/api/auth", TodolistWeb.Controllers do
     pipe_through :api
+
+    post "/register", UserRegistration, :register
+    post "/login", UserLogin, :login
+  end
+
+  scope "/api", TodolistWeb do
+    pipe_through [:api, :api_protected]
 
     resources "/users", UserController
 

@@ -47,5 +47,6 @@ defmodule TodolistWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug CORSPlug
+  plug Pow.Plug.Session, otp_app: :todolist
   plug TodolistWeb.Router
 end

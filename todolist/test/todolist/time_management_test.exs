@@ -29,9 +29,9 @@ defmodule Todolist.TimeManagementTest do
 
     test "list_clocks/0 multiple clocks" do
       clocks = [
-        clock_fixture(%{user_id: user_fixture().id}),
-        clock_fixture(%{user_id: user_fixture().id}),
-        clock_fixture(%{user_id: user_fixture().id})
+        clock_fixture(%{user_id: user_fixture(%{username: "A", email: "A@A.fr"}).id}),
+        clock_fixture(%{user_id: user_fixture(%{username: "B", email: "B@B.fr"}).id}),
+        clock_fixture(%{user_id: user_fixture(%{username: "C", email: "C@C.fr"}).id})
       ]
 
       assert TimeManagement.list_clocks() == clocks

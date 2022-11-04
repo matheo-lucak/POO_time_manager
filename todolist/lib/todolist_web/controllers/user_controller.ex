@@ -4,8 +4,6 @@ defmodule TodolistWeb.UserController do
 
   alias Todolist.Account
   alias Todolist.Account.User
-  alias Todolist.Repo
-  import Ecto.Query
 
   action_fallback(TodolistWeb.FallbackController)
 
