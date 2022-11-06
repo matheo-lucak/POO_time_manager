@@ -6,6 +6,7 @@ defmodule Todolist.Repo.Migrations.CreateUsers do
       add :username, :string, null: false
       add :email, :string, null: false
       add :password_hash, :string
+      add :role, :string, null: false
 
       timestamps()
     end

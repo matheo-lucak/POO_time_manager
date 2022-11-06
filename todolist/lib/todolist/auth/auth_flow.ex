@@ -5,15 +5,20 @@ defmodule Todolist.Auth.AuthFlow do
 
   alias Plug.Conn
   alias Todolist.Auth.Token
+  alias Todolist.Account
 
   @impl true
   def fetch(conn, _config) do
     with {:ok, jwt_token} <- read_token(conn),
          {:ok, claims} <- validate_token(jwt_token) do
+      user_id = claims["user_id"]
+      user = Account.get_user!(user_id)
+
       conn =
         conn
         |> Conn.put_private(:api_access_token, jwt_token)
-        |> Conn.put_private(:user_id, claims["user_id"])
+        |> Conn.put_private(:user_id, user_id)
+        |> Conn.put_private(:current_user, user)
 
       {conn, %{"token" => jwt_token}}
     else
@@ -25,7 +30,13 @@ defmodule Todolist.Auth.AuthFlow do
   def create(conn, user, _config) do
     claims = %{"user_id" => user.id}
     generated_token = Token.generate_and_sign!(claims)
-    conn = conn |> Conn.put_private(:api_access_token, generated_token)
+    user = Account.get_user!(user.id)
+
+    conn =
+      conn
+      |> Conn.put_private(:api_access_token, generated_token)
+      |> Conn.put_private(:current_user, user)
+
     {conn, user}
   end
 
@@ -45,5 +56,4 @@ defmodule Todolist.Auth.AuthFlow do
   @spec validate_token(binary()) :: {atom(), any()}
   defp validate_token(jwt_token),
     do: Token.verify_and_validate(jwt_token)
-
 end

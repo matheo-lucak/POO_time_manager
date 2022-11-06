@@ -50,6 +50,7 @@ defmodule Todolist.Account do
 
   """
   def get_user(id), do: Repo.get(User, id)
+  def get_user!(id), do: Repo.get!(User, id)
 
   defmodule UserNotFoundError do
     defexception message: "User not found"

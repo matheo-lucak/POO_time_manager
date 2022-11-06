@@ -16,6 +16,14 @@ defmodule TodolistWeb.Router do
     plug Todolist.Auth.AuthFlow, otp_app: :todolist
   end
 
+  pipeline :manager do
+    plug TodolistWeb.EnsureRolePlug, [:manager, :general_manager]
+  end
+
+  pipeline :general_manager do
+    plug TodolistWeb.EnsureRolePlug, :general_manager
+  end
+
   pipeline :api_protected do
     plug Pow.Plug.RequireAuthenticated,
     error_handler: TodolistWeb.AuthErrorHandler
