@@ -6,7 +6,7 @@ export default class AxiosServices
 
     constructor() {
         this.axiosClient = axios.create({
-            baseURL: "http://localhost:4000/api"
+            baseURL: "http://10.134.198.1:4000/api"
         });
     }
     public async get(url: string, queryParams : any) : Promise<any>
