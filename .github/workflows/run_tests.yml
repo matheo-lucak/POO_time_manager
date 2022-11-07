@@ -13,7 +13,7 @@ jobs:
 
       - uses: KengoTODA/actions-setup-docker-compose@main
         with:
-          version: "1.29.2"
+          version: "2.12.2"
 
       - name: Run tests
         run: make test
@@ -29,7 +29,7 @@ jobs:
 
       - uses: KengoTODA/actions-setup-docker-compose@main
         with:
-          version: "1.29.2"
+          version: "2.12.2"
 
       - name: Run project as dev
         run: make dev
@@ -48,7 +48,7 @@ jobs:
 
       - uses: KengoTODA/actions-setup-docker-compose@main
         with:
-          version: "1.29.2"
+          version: "2.12.2"
 
       - name: Run project as prod
         run: make prod

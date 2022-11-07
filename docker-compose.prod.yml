@@ -4,7 +4,9 @@ services:
     build:
       target: app_prod
       context: ./todolist
+      args:
+        - MIX_ENV=prod
     environment:
-      - MIX_ENV=prod
+      MIX_ENV: prod
     env_file:
       - .env

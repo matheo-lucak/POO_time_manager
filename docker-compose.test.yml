@@ -4,7 +4,11 @@ services:
     build:
       target: app_test
       context: ./todolist
+      args:
+        - MIX_ENV=test
     environment:
-      - MIX_ENV=test
+      MIX_ENV: test
     env_file:
       - .env
+    volumes:
+      - ./todolist:/api
