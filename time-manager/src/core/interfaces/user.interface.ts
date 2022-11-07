@@ -4,7 +4,7 @@ export interface User
 {
     username: string
     email: string
-    userID: number
+    user_id: number
     role: string
 }
 

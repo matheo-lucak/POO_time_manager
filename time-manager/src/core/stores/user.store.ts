@@ -8,19 +8,17 @@ export const useUserStore = defineStore('user', {
     user: {
       username:"Eduardo",
       email: "eddy@eddy.fr",
-      userID: 0,
+      user_id: 0,
       role: ""
     },
     userServices: new UsersServices()
   }),
   getters: {
-    getUser(state) {
-      return this.user;
-    }
+    getUser : (state) => state.user,
   },
   actions: {
-    registerUser(email: string, username: string, password: string) {
-      this.userServices.registerUser(email, username, password).then((response: User) => {
+    registerUser(email: string, username: string, password: string, password_confirmation: string) {
+      this.userServices.registerUser(email, username, password, password_confirmation).then((response: User) => {
         this.user = response;
       }).catch((e) => {
         console.log(e);
