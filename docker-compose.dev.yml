@@ -4,9 +4,12 @@ services:
     build:
       target: app_dev
       context: ./todolist
+      args:
+        - MIX_ENV=dev
     environment:
       MIX_ENV: dev
     env_file:
       - .env
+    entrypoint: bash /api/entrypoint.sh
     volumes:
       - ./todolist:/api

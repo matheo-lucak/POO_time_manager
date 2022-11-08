@@ -17,17 +17,17 @@ test: api-test app-test
 ##########   DEV API    ##########
 ##################################
 
-api-shell:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm api sh
-
 api-test:
-	docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm api mix test
+	docker-compose -f docker-compose.yml -f docker-compose.test.yml run api mix do deps.get, test
+
+api-shell:
+	docker exec -it tm_api bash
 
 api-db-setup:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm api mix ecto.setup
+	docker exec tm_api mix ecto.setup
 
 api-db-reset:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm api mix ecto.reset
+	docker exec tm_api mix ecto.reset
 
 ##############################
 ##########   APP    ##########

@@ -14,9 +14,14 @@ defmodule Todolist.AccountTest do
 
     import Todolist.AccountFixtures
 
-    @invalid_attrs %{email: nil, username: nil}
+    @invalid_attrs %{email: nil, username: nil, password: nil, password_confirmation: nil}
 
-    @invalid_email_attrs %{email: "bad email", username: "valid username"}
+    @invalid_email_attrs %{
+      email: "bad email",
+      username: "valid username",
+      password: "password",
+      password_confirmation: "password"
+    }
 
     test "list_users/0 no users" do
       assert Account.list_users() == []
@@ -28,10 +33,14 @@ defmodule Todolist.AccountTest do
     end
 
     test "list_users/2 returns multiple users" do
-      users = [user_fixture(), user_fixture(), user_fixture()]
+      users = [
+        user_fixture(%{username: "A", email: "A@A.fr"}),
+        user_fixture(%{username: "B", email: "B@B.fr"}),
+        user_fixture(%{username: "C", email: "C@C.fr"})
+      ]
+
       assert Account.list_users() == users
     end
-
 
     test "get_user/1 returns the user with given id" do
       user = user_fixture()
@@ -39,7 +48,12 @@ defmodule Todolist.AccountTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      valid_attrs = %{email: "valid@email.fr", username: "some username"}
+      valid_attrs = %{
+        email: "valid@email.fr",
+        username: "some username",
+        password: "password",
+        password_confirmation: "password"
+      }
 
       assert {:ok, %User{} = user} = Account.create_user(valid_attrs)
       assert user.email == "valid@email.fr"
@@ -56,7 +70,12 @@ defmodule Todolist.AccountTest do
 
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
-      update_attrs = %{email: "updated@email.fr", username: "some updated username"}
+
+      update_attrs = %{
+        email: "updated@email.fr",
+        username: "some updated username",
+        current_password: "super secure password"
+      }
 
       assert {:ok, %User{} = user} = Account.update_user(user, update_attrs)
       assert user.email == "updated@email.fr"
