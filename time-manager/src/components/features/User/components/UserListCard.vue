@@ -5,11 +5,11 @@
             {{username}}
         </div>
         <div>
-            <h3>Username</h3>
+            <h3>Email</h3>
             {{email}}
         </div>
         <div>
-            <button>Select user</button>
+            <button @click="selectUser">Select user</button>
         </div>
     </div>
     
@@ -42,6 +42,15 @@ export default defineComponent({
     },
     beforeMount() {
         
+    },
+    methods: {
+        selectUser: function() {
+            
+        }
     }
 })
 </script>
+
+<style scoped>
+
+</style>
