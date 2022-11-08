@@ -21,30 +21,33 @@ export default defineComponent({
   data()
   {
     return {
-      currentTime: Date().toString(),
+      currentTime: new Date().toString(),
     }
   },
   props: {
-    date: String,
-    status: Boolean
+    date: {
+     type: String,
+     required: true
+    },
+    status:  {
+      type: Boolean
+    }
   },
-  mounted: function () {
-    setInterval(function () {
-      this.getCurrentTime()
-      this.getElapsedTime()
-    }.bind(this), 1)
+  mounted() {
+    setInterval(() => {
+      this.getCurrentTime();
+      this.getElapsedTime(this.currentTime);
+    }, 1)
   },
   methods: {
-    formatDate: function (date : string) {
-      console.log(date)
+    formatDate(date : string) {
       if (date) {
         return moment(date).format('h:mm:ss');
       } else {
         return "-";
       }
     },
-    getElapsedTime: function (date : string) {
-      console.log(date)
+    getElapsedTime(date : string) {
       var a = moment(date);
       var b = moment(this.currentTime);
       if (date) {

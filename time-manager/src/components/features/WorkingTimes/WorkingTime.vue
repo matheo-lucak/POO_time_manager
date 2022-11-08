@@ -76,7 +76,7 @@ export default defineComponent({
             this.startDate = new Date(this.workingTime.start);
             this.endDate = new Date(this.workingTime.end);
 
-        }).catch(error => console.log(error));
+        }).catch(error => error);
 
     },
     computed: {

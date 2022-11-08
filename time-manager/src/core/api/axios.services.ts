@@ -3,10 +3,10 @@ import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
 export default class AxiosServices
 {
     private axiosClient: AxiosInstance;
-
+// server 10.134.198.1
     constructor() {
         this.axiosClient = axios.create({
-            baseURL: "http://10.134.198.1:4000/api"
+            baseURL: "http://localhost:4000/api"
         });
     }
     public async get(url: string, config : any) : Promise<any>

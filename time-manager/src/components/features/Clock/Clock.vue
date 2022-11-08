@@ -7,9 +7,9 @@
     <div v-if="clockStore.getClock.status === true">ClockActivated</div>
     <div v-if="clockStore.clock.status === true">WithoutGetter</div>
     <div class="buttonbox">
-      <button v-on:click="clockStore.refreshClock(this.user_id)">RefreshClock</button>
+      <button v-on:click="clockStore.refreshClock(user.user_id)">RefreshClock</button>
 
-      <button v-on:click="clockStore.submitClock(this.user_id)">ClockIn</button>
+      <button v-on:click="clockStore.submitClock(user.user_id)">ClockIn</button>
     </div>
 
   </div>
@@ -42,7 +42,6 @@ export default defineComponent( {
     const { fetchClock } = useClockStore();
     const { getUser } = useUserStore();
     this.user = getUser;
-    console.log(this.user)
     fetchClock(this.user.user_id);
   },
 

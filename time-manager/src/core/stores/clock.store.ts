@@ -20,9 +20,7 @@ export const useClockStore = defineStore('clock', {
 
     }),
     getters: {
-        getClock(state) {
-            return this.clock;
-        }
+        getClock: (state) => state.clock,
 
     },
     actions: {
@@ -31,7 +29,7 @@ export const useClockStore = defineStore('clock', {
             this.clockServices.getClock(userID).then((response: Clock) => {
                 this.clock = response;
             }).catch((e) => {
-                console.log(e)
+                e
             })
         },
 
@@ -39,7 +37,7 @@ export const useClockStore = defineStore('clock', {
             this.clockServices.postClock(userID).then((response: Clock) => {
                 this.clock = response;
             }).catch((e) => {
-                console.log(e)
+                e
             });
 
         },
@@ -48,7 +46,7 @@ export const useClockStore = defineStore('clock', {
             this.clockServices.postClock(userID).then((response: Clock) => {
                 this.clock = response;
             }).catch((e) => {
-                console.log(e)
+                e
             });
 
         }

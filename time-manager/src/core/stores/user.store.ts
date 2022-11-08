@@ -21,14 +21,14 @@ export const useUserStore = defineStore('user', {
       this.userServices.registerUser(email, username, password, password_confirmation).then((response: User) => {
         this.user = response;
       }).catch((e) => {
-        console.log(e);
+        e
       })
     },
     loginUser(email: string, password: string) {
       this.userServices.loginUser(email, password).then((response: User) => {
         this.user = response;
       }).catch((e) => {
-        console.log(e);
+        e
       })
     },
 
