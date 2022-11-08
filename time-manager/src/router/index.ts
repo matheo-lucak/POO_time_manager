@@ -1,6 +1,8 @@
 import WorkingTimesVue from '@/components/features/WorkingTimes/WorkingTimes.vue'
+import ClockVue from '@/components/features/Clock/Clock.vue'
+import LoginVue from '@/components/features/User/components/Login.vue'
+import RegisterVue from '@/components/features/User/components/Register.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import ClockManager from '@/components/features/Clock/Clock.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,8 +34,19 @@ const router = createRouter({
     {
       path: '/clocks',
       name: 'clock',
-      component: ClockManager
+      component: () =>ClockVue
     },
+    {
+      path: '/auth/login',
+      name: 'login',
+      component: () =>LoginVue
+    },
+    {
+      path: '/auth/register',
+      name: 'register',
+      component: () =>RegisterVue
+    },
+
   ]
 })
 
