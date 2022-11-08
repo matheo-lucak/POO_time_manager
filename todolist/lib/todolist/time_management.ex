@@ -78,6 +78,15 @@ defmodule Todolist.TimeManagement do
   end
 
   @doc """
+  Returns Clock
+  """
+  def reset_user_clock(userID) do
+    clock = find_or_create_user_clock(userID)
+
+    update_clock(clock, %{status: false})
+  end
+
+  @doc """
   Gets a single clock.
 
   Raises `Ecto.NoResultsError` if the Clock does not exist.
