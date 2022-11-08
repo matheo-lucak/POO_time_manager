@@ -14,6 +14,11 @@ defmodule Todolist.Account.User do
 
   @doc false
   def changeset(user, attrs) do
+    unsafe_changeset(user, attrs)
+    |> pow_changeset(attrs)
+  end
+
+  def unsafe_changeset(user, attrs) do
     user
     |> cast(attrs, [:username, :email, :role])
     |> validate_required([:username, :email])
@@ -21,6 +26,5 @@ defmodule Todolist.Account.User do
     |> validate_inclusion(:role, ~w(user manager general_manager))
     |> unique_constraint(:username, message: "Username already exists")
     |> unique_constraint(:email, message: "Email already exists")
-    |> pow_changeset(attrs)
   end
 end

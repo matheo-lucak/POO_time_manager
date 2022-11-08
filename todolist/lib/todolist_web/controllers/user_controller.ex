@@ -42,4 +42,34 @@ defmodule TodolistWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def promote(conn, %{"userID" => userID}) do
+    user = Account.verify_user!(userID)
+
+    if user.role == "user" do
+      Account.unsafe_update_user(user, %{role: "manager"})
+      user = Account.get_user(user.id)
+
+      conn
+      |> render("show.json", user: user)
+    else
+      conn
+      |> send_resp(:not_modified, "")
+    end
+  end
+
+  def demote(conn, %{"userID" => userID}) do
+    user = Account.verify_user!(userID)
+
+    if user.role == "manager" do
+      Account.unsafe_update_user(user, %{role: "user"})
+      user = Account.get_user(user.id)
+
+      conn
+      |> render("show.json", user: user)
+    else
+      conn
+      |> send_resp(:not_modified, "")
+    end
+  end
 end
