@@ -52,6 +52,13 @@ defmodule TodolistWeb.Router do
     delete "/workingtimes/:id", WorkingTimeController, :delete
   end
 
+  scope "/api", TodolistWeb do
+    pipe_through [:api, :api_protected, :general_manager]
+
+    put "/users/promote/:userID", UserController, :promote
+    put "/users/demote/:userID", UserController, :demote
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put

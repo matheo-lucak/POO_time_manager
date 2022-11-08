@@ -107,6 +107,12 @@ defmodule Todolist.Account do
     |> Repo.update()
   end
 
+  def unsafe_update_user(%User{} = user, attrs) do
+    user
+    |> User.unsafe_changeset(attrs)
+    |> Repo.update()
+  end
+
   @doc """
   Deletes a user.
 
