@@ -6,27 +6,58 @@ export default class AxiosServices
 
     constructor() {
         this.axiosClient = axios.create({
-            baseURL: "http://localhost:4000/api"
+            baseURL: "http://10.134.198.1:4000/api"
         });
     }
-    public async get(url: string, queryParams : any) : Promise<any>
+    public async get(url: string, config : any) : Promise<any>
     {
-        return await this.axiosClient.get(url, queryParams);
+        let token = localStorage.getItem('token');
+        if (token && config !== null)
+        {
+            config.headers = {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+
+        return await this.axiosClient.get(url, config);
+
     }
 
-    public async post(url: string, body: any, queryParams: any) : Promise<any>
+    public async post(url: string, body: any, config: any) : Promise<any>
     {
-        return await this.axiosClient.post(url, body, queryParams);
+        let token = localStorage.getItem('token');
+        if (token && config)
+        {
+            config.headers = {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+
+        return await this.axiosClient.post(url, body, config);
     }
 
-    public async put(url: string, body: any, queryParams: any) : Promise<any>
+    public async put(url: string, body: any, config: any) : Promise<any>
     {
-        return await this.axiosClient.put(url, body, queryParams);
+        let token = localStorage.getItem('token');
+        if (token && config)
+        {
+            config.headers = {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        return await this.axiosClient.put(url, body, config);
     }
 
-    public async delete(url: string, queryParams: any) : Promise<any>
+    public async delete(url: string, config: any) : Promise<any>
     {
-        return await this.axiosClient.delete(url, queryParams);
+        let token = localStorage.getItem('token');
+        if (token && config)
+        {
+            config.headers = {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        return await this.axiosClient.delete(url, config);
     }
 
 }
