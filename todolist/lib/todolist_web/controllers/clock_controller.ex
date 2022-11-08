@@ -21,4 +21,11 @@ defmodule TodolistWeb.ClockController do
       render(conn, "show.json", clock: clock)
     end
   end
+
+  def reset(conn, %{"userID" => userID}) do
+    Account.verify_user!(userID)
+
+    TimeManagement.reset_user_clock(userID)
+    send_resp(conn, :no_content, "")
+  end
 end

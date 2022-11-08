@@ -44,6 +44,7 @@ defmodule TodolistWeb.Router do
 
     get "/clocks/:userID", ClockController, :index
     post "/clocks/:userID", ClockController, :toggle
+    post "/clocks/reset/:userID", ClockController, :reset
 
     get "/workingtimes/:userID", WorkingTimeController, :index
     get "/workingtimes/:userID/:id", WorkingTimeController, :show
