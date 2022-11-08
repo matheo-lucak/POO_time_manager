@@ -2,10 +2,10 @@ import type UsersServices from "@/core/api/users.services";
 
 export interface User
 {
-    username: string;
-    email: string;
-    user_id: number;
-    role: string;
+    username: string
+    email: string
+    id: number
+    role: string
 }
 
 export interface UserStore
