@@ -4,6 +4,8 @@ import type {User, UserStore} from '@/core/interfaces/user.interface'
 import UsersServices from "@/core/api/users.services";
 
 export const useUserStore = defineStore('user', {
+
+  // TODO: implement selected user (by a manager)
   state: (): UserStore => ({
     user: {
       username:"Eduardo",

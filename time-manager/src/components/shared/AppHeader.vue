@@ -17,6 +17,9 @@ import { useMobileStore } from '@/core/stores/mobile';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
+
+    // TODO: CRUD or current user + login and register in a panel we can open from the header at any time
+
     data() {
         return {
             isMobile: false

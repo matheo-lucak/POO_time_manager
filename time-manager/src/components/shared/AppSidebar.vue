@@ -34,7 +34,8 @@ export default {
             return "";
         }
     },
-    mounted() {
+    beforeMount() {
+        // TODO: if manager or general amager, access list of users in sidebar
     },
     watch: {
         '$route'(to, from) {

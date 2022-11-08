@@ -5,6 +5,9 @@ import jwt_decode from "jwt-decode";
 
 export default class UsersServices extends AxiosServices
 {
+
+    // TODO: implement promote, demote
+
     public async getUser(userID: number) : Promise<User>
     {
         return this.get(`/users/${userID}`, { params: {} });
