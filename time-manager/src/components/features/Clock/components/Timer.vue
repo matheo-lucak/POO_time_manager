@@ -50,7 +50,7 @@ export default defineComponent({
     getElapsedTime(date : string) {
       var a = moment(date);
       var b = moment(this.currentTime);
-      if (date) {
+      if (date && this.status) {
         var c = moment(b.diff(a))
         return c.format('mm:ss') ;
       }

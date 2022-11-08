@@ -9,7 +9,7 @@ export const useUserStore = defineStore('user', {
     user: {
       username:"Eduardo",
       email: "eddy@eddy.fr",
-      user_id: 0,
+      id: 0,
       role: ""
     },
     userServices: new UsersServices()
