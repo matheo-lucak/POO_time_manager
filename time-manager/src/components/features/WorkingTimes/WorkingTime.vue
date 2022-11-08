@@ -41,7 +41,6 @@
 import Datepicker from 'vue3-datepicker';
 import { defineComponent } from 'vue';
 import { useWorkingtimesStore } from '@/core/stores/workingtimes';
-// import { useRoute } from 'vue-router';
 
 export default defineComponent({
     data() {

@@ -8,13 +8,13 @@
                 Beep Boop I'm not a bot
             </div>
             <div>
-              <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"  target="_blank" rel="noreferrer noopener">Contact</a>
+              <RouterLink to="/contact">Contact</RouterLink>
             </div>
             <div>
-              <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"  target="_blank" rel="noreferrer noopener">RGPD</a>
+              <RouterLink to="/rgpd">RGPD</RouterLink>
             </div>
             <div>
-              <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"  target="_blank" rel="noreferrer noopener">About Us</a>
+              <RouterLink to="/howaboutda">About Us</RouterLink>
             </div>
           </div>
             

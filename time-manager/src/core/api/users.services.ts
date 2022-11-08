@@ -48,7 +48,6 @@ export default class UsersServices extends AxiosServices
 
             let decoded : any = jwt_decode(response.data.token);
 
-            console.log(decoded)
             return this.getUser(decoded.user_id);
         });
     }
@@ -61,7 +60,6 @@ export default class UsersServices extends AxiosServices
 
             let decoded : any = jwt_decode(response.data.token);
 
-            console.log(decoded.userID)
             return this.getUser(decoded.userID);
         })
     }
