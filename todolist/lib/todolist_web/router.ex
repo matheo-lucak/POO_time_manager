@@ -58,7 +58,20 @@ defmodule TodolistWeb.Router do
 
     put "/users/promote/:userID", UserController, :promote
     put "/users/demote/:userID", UserController, :demote
+    get "/teams/", TeamController, :index
   end
+
+  scope "/api", TodolistWeb do
+    pipe_through [:api, :api_protected, :manager]
+
+    post "/teams/", TeamController, :create
+    get "/teams/:userID", TeamController, :index
+    post "/teams/:teamID/manager", TeamController, :add_manager
+    post "/teams/:teamID/employee", TeamController, :add_employee
+    delete "/teams/:teamID/manager", TeamController, :delete_manager
+    delete "/teams/:teamID/employee", TeamController, :delete_employee
+  end
+
 
   # Enables LiveDashboard only for development
   #
