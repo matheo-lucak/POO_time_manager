@@ -1,44 +1,57 @@
 <template>
-    <header class="header-container" >
-        <div class="toolbar flex-row middle space-around">
-            <AppSidebarMobile v-if="getIsMobile"/>
-            <nav>
-                <RouterLink to="/">Time Manager</RouterLink>
-            </nav>
-        </div>
-        <div class="toolbar-border"></div>
-    </header>
+  <header class="header-container" >
+    <div class="toolbar flex-row middle space-around">
+      <AppSidebarMobile v-if="getIsMobile"/>
+      <nav class="flex-row middle space-around">
+        <RouterLink to="/">Time Manager</RouterLink>
+        <router-link v-if="userStore.user.id === 0" to="/auth/login">Login
+        </router-link>
+        <button v-if="userStore.user.id !== 0" @click="userStore.logoutUser()">Logout
+        </button>
+      </nav>
+      <User v-if="userStore.user.id !== 0"/>
+    </div>
+    <div class="toolbar-border"></div>
+  </header>
 </template>
 
 <script lang="ts">
 import AppSidebarMobile from '@/components/shared/AppSidebarMobile.vue';
 import AppSidebar from '@/components/shared/AppSidebar.vue';
+import User from '@/components/features/User/User.vue'
 import { useMobileStore } from '@/core/stores/mobile';
+import { useUserStore } from '@/core/stores/user.store'
 import { defineComponent } from 'vue';
+import {mapActions} from "pinia";
 
 export default defineComponent({
 
-    // TODO: CRUD or current user + login and register in a panel we can open from the header at any time
+  // TODO: CRUD or current user + login and register in a panel we can open from the header at any time
 
-    data() {
-        return {
-            isMobile: false
-        }
-    },
-    mounted() {
-        const { getMobile } = useMobileStore();
-        this.isMobile = getMobile;
-    },
-    computed: {
-        getIsMobile() {
-            const { getMobile } = useMobileStore();
-            return getMobile;
-        }
-    },
-    components: {
-        AppSidebarMobile,
-        AppSidebar
+  setup() {
+    const userStore = useUserStore();
+    return { userStore }
+  },
+  data() {
+    return {
+      isMobile: false
     }
+  },
+  mounted() {
+    const { getMobile } = useMobileStore();
+    this.isMobile = getMobile;
+  },
+  computed: {
+    getIsMobile() {
+      const { getMobile } = useMobileStore();
+      return getMobile;
+    }
+  },
+  components: {
+    AppSidebarMobile,
+    AppSidebar,
+    User,
+  }
 })
 </script>
 
@@ -67,7 +80,7 @@ export default defineComponent({
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 </style>

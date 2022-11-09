@@ -9,6 +9,7 @@
       <button v-on:click="clockStore.refreshClock(user.id)">RefreshClock</button>
 
       <button v-on:click="clockStore.submitClock(user.id)">ClockIn</button>
+
     </div>
 
   </div>
