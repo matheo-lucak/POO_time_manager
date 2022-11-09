@@ -6,11 +6,19 @@ export default class ClocksServices extends AxiosServices
 {
     public async getClock(userID: number) : Promise<Clock>
     {
-        return this.get(`/clocks/${userID}`, null);
+        let response = await this.get(`/clocks/${userID}`, {params: {}});
+        return response.data.data
     }
 
     public async postClock(userID: number) : Promise<Clock>
     {
-        return this.post(`/clocks/${userID}`, null,null);
+        let response = await this.post(`/clocks/${userID}`, null,{params: {}});
+        return response.data.data
+    }
+
+    public async resetClock(userID: number) : Promise<Clock>
+    {
+        let response = await this.post(`/clocks/reset/${userID}`, null, {params: {}});
+        return response.data.data
     }
 }

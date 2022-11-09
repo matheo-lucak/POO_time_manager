@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type {Clock} from "@/core/interfaces/clock.interface";
 import ClocksServices from "@/core/api/clocks.service"
+import { useUserStore } from "@/core/stores/user.store";
 import type { User } from "@/core/interfaces/user.interface"
 
 type ClockStore =
@@ -27,9 +28,10 @@ export const useClockStore = defineStore('clock', {
 
         fetchClock(userID: number) {
             this.clockServices.getClock(userID).then((response: Clock) => {
+                console.log(response)
                 this.clock = response;
             }).catch((e) => {
-                e
+                console.log(e)
             })
         },
 
@@ -37,16 +39,16 @@ export const useClockStore = defineStore('clock', {
             this.clockServices.postClock(userID).then((response: Clock) => {
                 this.clock = response;
             }).catch((e) => {
-                e
+                console.log(e)
             });
 
         },
 
         refreshClock(userID: number) {
-            this.clockServices.postClock(userID).then((response: Clock) => {
-                this.clock = response;
+            this.clockServices.postClock(userID).then(() => {
+                this.clock.status = false;
             }).catch((e) => {
-                e
+                console.log(e)
             });
 
         }

@@ -49,6 +49,7 @@ defmodule TodolistWeb.Router do
     get "/workingtimes/:userID", WorkingTimeController, :index
     get "/workingtimes/:userID/:id", WorkingTimeController, :show
     post "/workingtimes/:userID", WorkingTimeController, :create
+    post "/clocks/reset/:userID", ClockController, :reset
     put "/workingtimes/:id", WorkingTimeController, :update
     delete "/workingtimes/:id", WorkingTimeController, :delete
   end

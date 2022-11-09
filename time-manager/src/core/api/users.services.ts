@@ -8,9 +8,10 @@ export default class UsersServices extends AxiosServices
 
     // TODO: implement promote, demote
 
-    public async getUser(userID: number) : Promise<User>
+    public async getUser(id: number) : Promise<User>
     {
-        return this.get(`/users/${userID}`, { params: {} });
+        let response = await this.get(`/users/${id}`, { params: { } });
+        return response.data.data;
     }
 
     public async getAllUser(email: string | undefined, username: string | undefined) : Promise<User>
@@ -24,22 +25,26 @@ export default class UsersServices extends AxiosServices
         {
             config.params.username = username;
         }
-        return this.get(`/users`, config)
+        let response = await this.get(`/users`, config);
+        return response.data.data;
     }
 
-    public async postUser(userID: number) : Promise<User>
+    public async postUser(id: number) : Promise<User>
     {
-        return this.post(`/users/${userID}`, null,null);
+        let response = await this.post(`/users/${id}`, null,null);
+        return response.data.data;
     }
 
-    public async putUser(userID: number) : Promise<User>
+    public async putUser(id: number) : Promise<User>
     {
-        return this.put(`/users/${userID}`, null, null);
+        let response = await this.put(`/users/${id}`, null, null);
+        return response.data.data;
     }
 
-    public async deleteUser(userID: number) : Promise<User>
+    public async deleteUser(id: number) : Promise<User>
     {
-        return this.delete(`/users/${userID}`, null);
+        let response = await this.delete(`/users/${id}`, null);
+        return response.data.data;
     }
 
     public async loginUser(email: string, password: string) : Promise<User>
@@ -63,7 +68,7 @@ export default class UsersServices extends AxiosServices
 
             let decoded : any = jwt_decode(response.data.token);
 
-            return this.getUser(decoded.userID);
+            return this.getUser(decoded.user_id);
         })
     }
 }
