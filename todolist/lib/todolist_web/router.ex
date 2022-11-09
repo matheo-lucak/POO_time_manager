@@ -29,6 +29,10 @@ defmodule TodolistWeb.Router do
     error_handler: TodolistWeb.AuthErrorHandler
   end
 
+  pipeline :owned_resource_protection do
+    # Checks all routes containing userID as param
+    plug TodolistWeb.EnsureUserResourceAccess
+  end
 
   scope "/api/auth", TodolistWeb.Controllers do
     pipe_through :api
@@ -38,9 +42,12 @@ defmodule TodolistWeb.Router do
   end
 
   scope "/api", TodolistWeb do
-    pipe_through [:api, :api_protected]
+    pipe_through [:api, :api_protected, :owned_resource_protection]
 
-    resources "/users", UserController
+    get "/users/:userID", UserController, :index
+    post "/users/:userID", UserController, :create
+    put "/users/:userID", UserController, :update
+    delete "/users/:userID", UserController, :delete
 
     get "/clocks/:userID", ClockController, :index
     post "/clocks/:userID", ClockController, :toggle
@@ -49,8 +56,8 @@ defmodule TodolistWeb.Router do
     get "/workingtimes/:userID", WorkingTimeController, :index
     get "/workingtimes/:userID/:id", WorkingTimeController, :show
     post "/workingtimes/:userID", WorkingTimeController, :create
-    put "/workingtimes/:id", WorkingTimeController, :update
-    delete "/workingtimes/:id", WorkingTimeController, :delete
+    put "/workingtimes/:userID/:id", WorkingTimeController, :update
+    delete "/workingtimes/:userID/:id", WorkingTimeController, :delete
   end
 
   scope "/api", TodolistWeb do

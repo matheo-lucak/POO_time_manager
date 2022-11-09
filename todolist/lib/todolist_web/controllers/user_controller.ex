@@ -22,21 +22,21 @@ defmodule TodolistWeb.UserController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    user = Account.get_user(id)
+  def show(conn, %{"userID" => userID}) do
+    user = Account.get_user(userID)
     render(conn, "show.json", user: user)
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Account.get_user(id)
+  def update(conn, %{"userID" => userID, "user" => user_params}) do
+    user = Account.get_user(userID)
 
     with {:ok, %User{} = user} <- Account.update_user(user, user_params) do
       render(conn, "show.json", user: user)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    user = Account.get_user(id)
+  def delete(conn, %{"userID" => userID}) do
+    user = Account.get_user(userID)
 
     with {:ok, %User{}} <- Account.delete_user(user) do
       send_resp(conn, :no_content, "")

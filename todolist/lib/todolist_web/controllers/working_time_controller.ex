@@ -35,8 +35,8 @@ defmodule TodolistWeb.WorkingTimeController do
     render(conn, "show.json", working_time: working_time)
   end
 
-  def update(conn, %{"id" => id, "working_time" => working_time_params}) do
-    working_time = TimeManagement.get_working_time(id)
+  def update(conn, %{"userID" => _, "id" => id, "working_time" => working_time_params}) do
+    working_time = TimeManagement.get_working_time!(id)
 
     with {:ok, %WorkingTime{} = working_time} <-
            TimeManagement.update_working_time(working_time, working_time_params) do
@@ -44,8 +44,8 @@ defmodule TodolistWeb.WorkingTimeController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    working_time = TimeManagement.get_working_time(id)
+  def delete(conn, %{"userID" => _, "id" => id}) do
+    working_time = TimeManagement.get_working_time!(id)
 
     with {:ok, %WorkingTime{}} <- TimeManagement.delete_working_time(working_time) do
       send_resp(conn, :no_content, "")
