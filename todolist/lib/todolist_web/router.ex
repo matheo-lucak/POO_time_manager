@@ -44,7 +44,7 @@ defmodule TodolistWeb.Router do
   scope "/api", TodolistWeb do
     pipe_through [:api, :api_protected, :owned_resource_protection]
 
-    get "/users/:userID", UserController, :index
+    get "/users/:userID", UserController, :show
     post "/users/:userID", UserController, :create
     put "/users/:userID", UserController, :update
     delete "/users/:userID", UserController, :delete
@@ -63,6 +63,7 @@ defmodule TodolistWeb.Router do
   scope "/api", TodolistWeb do
     pipe_through [:api, :api_protected, :general_manager]
 
+    get "/users", UserController, :index
     put "/users/promote/:userID", UserController, :promote
     put "/users/demote/:userID", UserController, :demote
     get "/teams/", TeamController, :index
