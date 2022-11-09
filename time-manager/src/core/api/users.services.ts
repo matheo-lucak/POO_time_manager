@@ -35,9 +35,10 @@ export default class UsersServices extends AxiosServices
         return response.data.data;
     }
 
-    public async putUser(id: number) : Promise<User>
+    public async putUser(id: number, email: string | undefined, username: string | undefined) : Promise<User>
     {
-        let response = await this.put(`/users/${id}`, null, null);
+        let body : any = { username, email };
+        let response = await this.put(`/users/${id}`, body, null);
         return response.data.data;
     }
 

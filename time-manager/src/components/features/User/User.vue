@@ -15,7 +15,7 @@ import Dropdown from "@/components/shared/Dropdown.vue";
 export default defineComponent({
   name: 'User',
   components: {Dropdown},
-  // TODO: wrap login register + crud user in here, openable from header
+  // TODO: delete and update
 
   // TODO: components we'll wrap in the sidebar, if current user is general manager promote / demote routes implemented, if not just regular statistics + crud for the selected user
   setup() {
@@ -28,13 +28,22 @@ export default defineComponent({
     }
   },
   beforeMount() {
-
+    const { getUserFromToken } = useUserStore();
+    getUserFromToken();
   },
   computed: {
 
   },
-  methods: {
+  mounted() {
 
+  },
+  methods: {
+    updateUser() {
+
+    },
+    deleteUser() {
+
+    },
   }
 })
 </script>
