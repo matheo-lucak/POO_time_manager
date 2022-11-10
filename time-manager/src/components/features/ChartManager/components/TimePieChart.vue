@@ -34,10 +34,16 @@ export default defineComponent({
         const chartStore = useChartStore();
         const userStore = useUserStore();
 
-        // //filter data for charts
+        // filter data for charts
         const computeWorkingtimesByDays = () => {
             let computedWorkingtimes = chartStore.getWorkingtimes.filter((workingtime: Workingtime) => {
+                let startDate = new Date(workingtime.start);
+                let endDate = new Date(workingtime.end);
 
+                // TODO:
+                // Look if the day is the same, if not that should mean we start one day and end the next day, if we end a day in the past don't count it and just continue
+                // just take the hours left for the start day to the next, add it to the hours of the next day, and the next if there are multiples etc..
+                // we want one value per day at the end, or not ? maybe by week ? see what fit the best the pie chart, the bar chart and the line chart (best for line chart probably is by day, but we need to compute the xlabel data then)
             })
             return computedWorkingtimes;
         }
