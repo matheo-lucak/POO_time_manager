@@ -29,6 +29,10 @@ defmodule TodolistWeb.Router do
     error_handler: TodolistWeb.AuthErrorHandler
   end
 
+  pipeline :owned_resource_protection do
+    # Checks all routes containing userID as param
+    plug TodolistWeb.EnsureUserResourceAccess
+  end
 
   scope "/api/auth", TodolistWeb.Controllers do
     pipe_through :api
@@ -38,27 +42,44 @@ defmodule TodolistWeb.Router do
   end
 
   scope "/api", TodolistWeb do
-    pipe_through [:api, :api_protected]
+    pipe_through [:api, :api_protected, :owned_resource_protection]
 
-    resources "/users", UserController
+    get "/users/:userID", UserController, :show
+    post "/users/:userID", UserController, :create
+    put "/users/:userID", UserController, :update
+    delete "/users/:userID", UserController, :delete
 
     get "/clocks/:userID", ClockController, :index
     post "/clocks/:userID", ClockController, :toggle
+    post "/clocks/reset/:userID", ClockController, :reset
 
     get "/workingtimes/:userID", WorkingTimeController, :index
     get "/workingtimes/:userID/:id", WorkingTimeController, :show
     post "/workingtimes/:userID", WorkingTimeController, :create
-    post "/clocks/reset/:userID", ClockController, :reset
-    put "/workingtimes/:id", WorkingTimeController, :update
-    delete "/workingtimes/:id", WorkingTimeController, :delete
+    put "/workingtimes/:userID/:id", WorkingTimeController, :update
+    delete "/workingtimes/:userID/:id", WorkingTimeController, :delete
   end
 
   scope "/api", TodolistWeb do
     pipe_through [:api, :api_protected, :general_manager]
 
+    get "/users", UserController, :index
     put "/users/promote/:userID", UserController, :promote
     put "/users/demote/:userID", UserController, :demote
+    get "/teams/", TeamController, :index
   end
+
+  scope "/api", TodolistWeb do
+    pipe_through [:api, :api_protected, :manager]
+
+    post "/teams/", TeamController, :create
+    get "/teams/:userID", TeamController, :index
+    post "/teams/:teamID/manager", TeamController, :add_manager
+    post "/teams/:teamID/employee", TeamController, :add_employee
+    delete "/teams/:teamID/manager", TeamController, :delete_manager
+    delete "/teams/:teamID/employee", TeamController, :delete_employee
+  end
+
 
   # Enables LiveDashboard only for development
   #

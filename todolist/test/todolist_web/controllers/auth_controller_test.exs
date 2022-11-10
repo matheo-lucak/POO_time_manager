@@ -3,7 +3,6 @@ defmodule TodolistWeb.AuthControllerTest do
 
   import Todolist.AccountFixtures
   alias Todolist.TestUtils
-  alias Todolist.Account
   alias Todolist.Auth.Token
 
   setup %{conn: conn} do

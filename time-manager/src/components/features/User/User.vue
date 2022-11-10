@@ -30,6 +30,7 @@ export default defineComponent({
   beforeMount() {
     const { getUserFromToken } = useUserStore();
     getUserFromToken();
+
   },
   computed: {
 
