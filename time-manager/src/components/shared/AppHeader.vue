@@ -23,7 +23,7 @@
 import AppSidebarMobile from '@/components/shared/AppSidebarMobile.vue';
 import AppSidebar from '@/components/shared/AppSidebar.vue';
 import User from '@/components/features/User/User.vue'
-import { useMobileStore } from '@/core/stores/mobile';
+import { useMobileStore } from '@/core/stores/mobile.store.store';
 import { useUserStore } from '@/core/stores/user.store'
 import { defineComponent } from 'vue';
 

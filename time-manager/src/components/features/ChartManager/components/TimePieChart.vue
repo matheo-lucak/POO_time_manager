@@ -13,6 +13,8 @@ import {
 } from 'echarts/components';
 import VChart from 'vue-echarts';
 import { ref, defineComponent } from 'vue';
+import { useUserStore } from '@/core/stores/user.store';
+import { useWorkingtimesStore } from '@/core/stores/workingtimes.store';
 
 use([
     CanvasRenderer,
@@ -26,13 +28,14 @@ export default defineComponent({
     components: {
         VChart,
     },
-    props: {
-        data: {
-            type: Array<Number>,
-            default: [820, 932, 901, 934, 1290, 1330, 1320]
-        }
-    },
     setup() {
+
+        const workingtimeStore = useWorkingtimesStore();
+        const userStore = useUserStore();
+        workingtimeStore.fetchWorkingtimes(userStore.connectedAs.id);
+
+        //filter data for charts
+
         const option = ref({
             title: {
                 text: 'Working Times',

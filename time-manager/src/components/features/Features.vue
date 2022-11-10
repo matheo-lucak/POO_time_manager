@@ -4,7 +4,7 @@ import AppHeader from '@/components/shared/AppHeader.vue';
 import AppFooter from '@/components/shared/AppFooter.vue';
 import AppSidebar from '@/components/shared/AppSidebar.vue';
 import { defineComponent } from 'vue';
-import { useMobileStore } from '@/core/stores/mobile';
+import { useMobileStore } from '@/core/stores/mobile.store.store';
 
 export default defineComponent({
     data() {
@@ -23,8 +23,11 @@ export default defineComponent({
             return getMobile;
         }
     },
-    mounted() {
+    beforeMount() {
         const mobileStore = useMobileStore();
+        if(window.innerWidth < 720) {
+            mobileStore.updateIsMobile(true);
+        }
         window.onresize = () => {
             if(window.innerWidth < 720) {
                 mobileStore.updateIsMobile(true);

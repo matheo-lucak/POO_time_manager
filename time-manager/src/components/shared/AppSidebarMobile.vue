@@ -4,20 +4,20 @@
     </button>
 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Time Manager</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <div class="mobile-sidebar">
-        <h2></h2>
-        <div class="flex-col gap-2 middle center">
-            <RouterLink :class="activeWorkingtimes" to="/">Working Times</RouterLink>
-            <RouterLink :class="activeClocks" to="/clocks">Clock !</RouterLink>
-            <RouterLink :class="activeCharts" to="/charts">See your charts</RouterLink>
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Time Manager</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-    </div>
-    </div>
+        <div class="offcanvas-body">
+            <div class="mobile-sidebar">
+            <h2></h2>
+            <div class="flex-col gap-2 middle center">
+                <RouterLink :class="activeWorkingtimes" to="/">Working Times</RouterLink>
+                <RouterLink :class="activeClocks" to="/clocks">Clock !</RouterLink>
+                <RouterLink :class="activeCharts" to="/charts">See your charts</RouterLink>
+            </div>
+        </div>
+        </div>
     </div>
 </template>
 
@@ -75,8 +75,11 @@ a {
     background-color: #17a2b8;
 }
 .mobile-sidebar {
-    width: 350px;
-    height: 100%;
-    background-color: #2f3136;
+    height: 100%;  
+}
+.offcanvas {
+    width: 350px!important;
+    background-color: #2f3136!important;
+    color: #fff;
 }
 </style>

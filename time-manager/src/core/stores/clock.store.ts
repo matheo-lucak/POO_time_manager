@@ -1,6 +1,5 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import type {Clock} from "@/core/interfaces/clock.interface";
+import type { Clock } from "@/core/interfaces/clock.interface";
 import ClocksServices from "@/core/api/clocks.service"
 import { useUserStore } from "@/core/stores/user.store";
 import type { User } from "@/core/interfaces/user.interface"
@@ -30,26 +29,38 @@ export const useClockStore = defineStore('clock', {
             this.clockServices.getClock(userID).then((response: Clock) => {
                 console.log(response)
                 this.clock = response;
-            }).catch((e) => {
-                console.log(e)
+            })
+            .catch((e: any) => {
+                if(e.response.status == 401) {
+                    const { logoutUser } = useUserStore();
+                    logoutUser();
+                }
             })
         },
 
         submitClock(userID: number) {
             this.clockServices.postClock(userID).then((response: Clock) => {
                 this.clock = response;
-            }).catch((e) => {
-                console.log(e)
-            });
+            })
+            .catch((e: any) => {
+                if(e.response.status == 401) {
+                    const { logoutUser } = useUserStore();
+                    logoutUser();
+                }
+            })
 
         },
 
         refreshClock(userID: number) {
             this.clockServices.postClock(userID).then(() => {
                 this.clock.status = false;
-            }).catch((e) => {
-                console.log(e)
-            });
+            })
+            .catch((e: any) => {
+                if(e.response.status == 401) {
+                    const { logoutUser } = useUserStore();
+                    logoutUser();
+                }
+            })
 
         }
     }
