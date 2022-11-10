@@ -1,4 +1,3 @@
-# lib/my_app_web/ensure_role_plug.ex
 defmodule TodolistWeb.EnsureRolePlug do
   @moduledoc """
   This plug ensures that a user has a particular role.

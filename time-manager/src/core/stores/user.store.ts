@@ -28,6 +28,10 @@ export const useUserStore = defineStore('user', {
         this.user = response;
       }).catch((e) => e)
     },
+    logoutUser() {
+      localStorage.clear()
+      this.user = { username:"", email:"", id:0, role: "" }
+    }
 
   },
 })

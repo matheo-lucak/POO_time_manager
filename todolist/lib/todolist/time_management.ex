@@ -213,6 +213,15 @@ defmodule Todolist.TimeManagement do
   defp filter_end(query, nil), do: query
   defp filter_end(query, end_before), do: from t in query, where: t.end <= ^end_before
 
+
+  defmodule WorkingTimeNotFoundError do
+    defexception message: "Working time not found"
+  end
+
+  defimpl Plug.Exception, for: WorkingTimeNotFoundError do
+    def status(_exception), do: 404
+  end
+
   @doc """
   Gets a single working_time.
 
@@ -230,6 +239,13 @@ defmodule Todolist.TimeManagement do
   def get_working_time(id) do
     query = from t in WorkingTime, where: t.id == ^id
     Repo.one(query)
+  end
+
+  def get_working_time!(id) do
+    case Repo.get(WorkingTime, id) do
+      nil -> raise WorkingTimeNotFoundError
+      wt -> wt
+    end
   end
 
   def get_working_time_by_user(userID, id) do

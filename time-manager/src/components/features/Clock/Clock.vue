@@ -2,13 +2,16 @@
 
   <div id="clock">
 
-    <h1>Hello {{ this.user.username }}! This is the clock page.</h1>
+    <h1>Hello {{ user.username }}! This is the clock page.</h1>
     <h2><Timer :date="clockStore.getClock.time" :status="clockStore.getClock.status"/> </h2>
     <div v-if="clockStore.getClock.status === true">ClockActivated</div>
+    
     <div class="buttonbox">
+
       <button v-on:click="clockStore.refreshClock(user.id)">RefreshClock</button>
 
       <button v-on:click="clockStore.submitClock(user.id)">ClockIn</button>
+
     </div>
 
   </div>

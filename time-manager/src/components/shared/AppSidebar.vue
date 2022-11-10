@@ -35,7 +35,7 @@ export default {
         }
     },
     beforeMount() {
-        // TODO: if manager or general amager, access list of users in sidebar
+        // TODO: if manager or general manager, access list of users in sidebar
     },
     watch: {
         '$route'(to, from) {
