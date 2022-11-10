@@ -60,8 +60,8 @@ nav .menu-item {
   transition: 0.4s;
 }
 
-div. menu-item.active,
-div. menu-item:hover {
+div .menu-item.active,
+div .menu-item:hover {
   background-color: #3c4462;
   border-bottom-color: #a94442;
 }

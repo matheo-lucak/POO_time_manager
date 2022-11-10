@@ -12,9 +12,9 @@
         <div class="mobile-sidebar">
         <h2></h2>
         <div class="flex-col gap-2 middle center">
-            <button :class="activeWorkingtimes"><RouterLink to="/">Working Times</RouterLink></button>
-            <button :class="activeClocks"><RouterLink to="/clocks">Clock !</RouterLink></button>
-            <button :class="activeCharts"><RouterLink to="/charts">See your charts</RouterLink></button>
+            <RouterLink :class="activeWorkingtimes" to="/">Working Times</RouterLink>
+            <RouterLink :class="activeClocks" to="/clocks">Clock !</RouterLink>
+            <RouterLink :class="activeCharts" to="/charts">See your charts</RouterLink>
         </div>
     </div>
     </div>
@@ -57,8 +57,26 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
+a {
+    text-decoration: none;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    background-color: #2f3136;
+    border: none;
+    font-weight: bold;
+    height: 35px;
+    width: 80%;
+    border-radius: 0.25rem;
+}
+
+.active {
+    background-color: #17a2b8;
+}
 .mobile-sidebar {
-    background-color: #f9f9fb;
+    width: 350px;
+    height: 100%;
+    background-color: #2f3136;
 }
 </style>
