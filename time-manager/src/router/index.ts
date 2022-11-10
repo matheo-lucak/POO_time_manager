@@ -14,6 +14,10 @@ const router = createRouter({
       component: () => import('@/components/features/Features.vue'),
       children: [
         {
+          path: '/',
+          redirect: '/workingtimes'
+        },
+        {
           path: '/workingtimes',
           name: 'workingtimes',
           component: () => import('@/components/features/WorkingTimes/WorkingTimes.vue')

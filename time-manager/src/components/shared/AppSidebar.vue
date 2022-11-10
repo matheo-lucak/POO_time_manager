@@ -20,17 +20,17 @@ export default {
     computed: {
         activeClocks() {
             if(this.currentPath.includes('clocks'))
-                return "active";
+                return "active btn btn-info";
             return "";
         },
         activeCharts() {
             if(this.currentPath.includes('charts'))
-                return "active";
+                return "active btn btn-info";
             return "";
         }, 
         activeWorkingtimes() {
             if(this.currentPath.includes('workingtime'))
-                return "active";
+                return "active btn btn-info";
             return "";
         }
     },
@@ -52,17 +52,26 @@ export default {
 .fixed-sidebar {
     width: 350px;
     height: 100%;
-    background-color: #f9f9fb;
+    background-color: #2f3136;
 }
 
 button {
-    background-color: #f9f9fb;
+    background-color: #2f3136;
     border: none;
     font-weight: bold;
+    height: 35px;
+    width: 80%;
+    border-radius: 0.25rem;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+    height: 35px;
+    width: 80%;
 }
 
 .active {
- background-color: #3c44628a;
- color: white;
+    background-color: #17a2b8;
 }
 </style>

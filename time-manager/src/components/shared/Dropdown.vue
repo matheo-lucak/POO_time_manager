@@ -23,11 +23,9 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {useUserStore} from "@/core/stores/user.store";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 export default defineComponent({
   name: "Dropdown",
-  components: {FontAwesomeIcon},
   data() {
     return {
       isOpen: false
@@ -37,10 +35,6 @@ export default defineComponent({
     const userStore = useUserStore();
     return { userStore }
   },
-  props:
-      {
-
-      }
 })
 </script>
 
