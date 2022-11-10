@@ -2,15 +2,15 @@
 
   <div id="clock">
 
-    <h1>Hello {{ user.username }}! This is the clock page.</h1>
+    <h1>Hello {{ getUser.username }}! This is the clock page.</h1>
     <h2><Timer :date="clockStore.getClock.time" :status="clockStore.getClock.status"/> </h2>
     <div v-if="clockStore.getClock.status === true">ClockActivated</div>
     
     <div class="buttonbox">
 
-      <button v-on:click="clockStore.refreshClock(user.id)">RefreshClock</button>
+      <button v-on:click="clockStore.refreshClock(getUser.id)">RefreshClock</button>
 
-      <button v-on:click="clockStore.submitClock(user.id)">ClockIn</button>
+      <button v-on:click="clockStore.submitClock(getUser.id)">ClockIn</button>
 
     </div>
 
@@ -28,13 +28,14 @@ export default defineComponent( {
   name: 'ClockManager',
   data() {
     return {
-      user: {username:"", email:"", id:0, role:""},
+
       clockIn: true
     }
   },
   setup()  {
     const clockStore = useClockStore();
-    return { clockStore }
+    const { getUser } = useUserStore();
+    return { clockStore, getUser }
   },
 
   components: {
@@ -43,8 +44,8 @@ export default defineComponent( {
   mounted() {
     const { fetchClock } = useClockStore();
     const { getUser } = useUserStore();
-    this.user = getUser;
-    fetchClock(this.user.id);
+
+    fetchClock(getUser.id);
   },
 
   methods: {

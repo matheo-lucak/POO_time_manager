@@ -27,7 +27,6 @@ export const useClockStore = defineStore('clock', {
 
         fetchClock(userID: number) {
             this.clockServices.getClock(userID).then((response: Clock) => {
-                console.log(response)
                 this.clock = response;
             })
             .catch((e: any) => {

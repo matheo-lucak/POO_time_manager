@@ -67,10 +67,10 @@ export const useUserStore = defineStore('user', {
 
     getUserFromToken() {
       let token = localStorage.getItem('token');
-      let connectedAS = localStorage.getItem('connectedAS');
-      if(connectedAS) {
-        this.userServices.getUser(connectedAS).then((response: User) => {
-          this.user = response;
+      let connectedAs = localStorage.getItem('connectedAs');
+      if(connectedAs) {
+        this.userServices.getUser(connectedAs).then((response: User) => {
+          this.connectedAs = response;
         })
         .catch((e: any) => {
           if(e.response.status == 401) {

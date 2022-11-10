@@ -6,13 +6,13 @@
       <div class="menu-item">
       <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" class="form-control" id="username" v-model="userStore.user.username">
+        <input type="text" class="form-control" id="username" v-model="userStore.getUser.username">
       </div>
       </div>
       <div class="menu-item">
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="text" class="form-control" id="email" v-model="userStore.user.email">
+        <input type="text" class="form-control" id="email" v-model="userStore.getUser.email">
       </div>
     </div>
       <button>Update profile</button>

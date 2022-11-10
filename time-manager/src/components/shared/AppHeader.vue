@@ -7,8 +7,8 @@
       <nav class="flex-row middle space-around">
 
         <RouterLink to="/">Time Manager</RouterLink>
-        <RouterLink v-if="userStore.user.id === 0" to="/login">Login</RouterLink>
-        <button v-if="userStore.user.id !== 0" @click="userStore.logoutUser()">Logout</button>
+        <RouterLink v-if="userStore.getUser.id === 0" to="/login">Login</RouterLink>
+        <button v-if="userStore.getUser.id !== 0" @click="userStore.logoutUser()">Logout</button>
 
       </nav>
 
@@ -23,7 +23,7 @@
 import AppSidebarMobile from '@/components/shared/AppSidebarMobile.vue';
 import AppSidebar from '@/components/shared/AppSidebar.vue';
 import User from '@/components/features/User/User.vue'
-import { useMobileStore } from '@/core/stores/mobile.store.store';
+import { useMobileStore } from '@/core/stores/mobile.store';
 import { useUserStore } from '@/core/stores/user.store'
 import { defineComponent } from 'vue';
 

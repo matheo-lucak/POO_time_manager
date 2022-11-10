@@ -40,13 +40,15 @@ export default defineComponent({
                 text: 'Working Times'
             },
             tooltip: {},
-            legend: {},
+            legend: {
+                data: ['Never Gonna'],
+            },
             xAxis: {
                 data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
             },
             yAxis: {},
             series: [{
-                name: "Working Times",
+                name: 'Never Gonna',
                 type: "bar",
                 data: [5, 20, 36, 10, 10, 20, 4]
             }]

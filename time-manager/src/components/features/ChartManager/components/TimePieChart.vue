@@ -14,7 +14,8 @@ import {
 import VChart from 'vue-echarts';
 import { ref, defineComponent } from 'vue';
 import { useUserStore } from '@/core/stores/user.store';
-import { useWorkingtimesStore } from '@/core/stores/workingtimes.store';
+import { useChartStore } from '@/core/stores/chart.store';
+import type { Workingtime } from '@/core/interfaces/workingtime.interface';
 
 use([
     CanvasRenderer,
@@ -30,11 +31,18 @@ export default defineComponent({
     },
     setup() {
 
-        const workingtimeStore = useWorkingtimesStore();
+        const chartStore = useChartStore();
         const userStore = useUserStore();
-        workingtimeStore.fetchWorkingtimes(userStore.connectedAs.id);
 
-        //filter data for charts
+        // //filter data for charts
+        const computeWorkingtimesByDays = () => {
+            let computedWorkingtimes = chartStore.getWorkingtimes.filter((workingtime: Workingtime) => {
+
+            })
+            return computedWorkingtimes;
+        }
+
+        const seriesData = computeWorkingtimesByDays();
 
         const option = ref({
             title: {
@@ -48,7 +56,7 @@ export default defineComponent({
             legend: {
                 orient: 'vertical',
                 left: 'left',
-                data: ['Never', 'Gonna', 'GIve', 'You', 'Up'],
+                data: ['Never', 'Gonna', 'Give', 'You', 'Up'],
             },
             series: [
                 {
@@ -59,9 +67,10 @@ export default defineComponent({
                     data: [
                         { value: 335, name: 'Never' },
                         { value: 310, name: 'Gonna' },
-                        { value: 234, name: 'GIve' },
+                        { value: 234, name: 'Give' },
                         { value: 135, name: 'You' },
                         { value: 1548, name: 'Up' },
+                        // seriesData
                     ],
                     emphasis: {
                         itemStyle: {

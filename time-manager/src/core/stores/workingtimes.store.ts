@@ -9,9 +9,7 @@ export const useWorkingtimesStore = defineStore('workingtimes', {
         workingtimes: [],
     }),
     getters: {
-        getWorkingtimes(state)  {
-            return this.workingtimes;
-        }
+        getWorkingtimes: (state) => state.workingtimes,
     },
     actions: {
         fetchWorkingtimes(userId: number) {

@@ -4,7 +4,7 @@ import AppHeader from '@/components/shared/AppHeader.vue';
 import AppFooter from '@/components/shared/AppFooter.vue';
 import AppSidebar from '@/components/shared/AppSidebar.vue';
 import { defineComponent } from 'vue';
-import { useMobileStore } from '@/core/stores/mobile.store.store';
+import { useMobileStore } from '@/core/stores/mobile.store';
 
 export default defineComponent({
     data() {

@@ -1,8 +1,8 @@
 <template>
-    <RouterLink :to="`/workingtime/${userStore.user.id}`"> Register new working times </RouterLink>
+    <RouterLink :to="`/workingtime/${userStore.getConnectedAs.id}`"> Register new working times </RouterLink>
     <div class="flex-wrap feature-container">
 
-        <WorkingTimeCard v-for="workingtime in workingtimeStore.workingtimes" :userId="userStore.user.id" :id="workingtime.id" :start="workingtime.start" :end="workingtime.end"/>
+        <WorkingTimeCard v-for="workingtime in workingtimeStore.getWorkingtimes" :userId="userStore.getUser.id" :id="workingtime.id" :start="workingtime.start" :end="workingtime.end"/>
 
     </div>
 
@@ -28,10 +28,10 @@ export default defineComponent({
             userStore
         }
     },
-    beforeMount() {
+    mounted() {
         const workingtimeStore = useWorkingtimesStore();
         const userStore = useUserStore();
-        workingtimeStore.fetchWorkingtimes(userStore.user.id);
+        workingtimeStore.fetchWorkingtimes(userStore.getConnectedAs.id);
     },
     components: { WorkingTimeCard }
 })

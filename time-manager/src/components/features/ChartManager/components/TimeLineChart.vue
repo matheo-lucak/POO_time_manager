@@ -40,7 +40,9 @@ export default defineComponent({
                 text: 'Working Times',
             },
             tooltip: {},
-            legend: {},
+            legend: {
+                data: ['Give You Up'],
+            },
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
@@ -77,6 +79,7 @@ export default defineComponent({
             series: [
                 {
                     type: 'line',
+                    name: 'Give You Up',
                     smooth: false,
                     symbolSize: 10,
                     emphasis: {
