@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user', {
     selectedUser: {
       username:"Eduardo",
       email: "eddy@eddy.fr",
-      user_id: 0,
+      id: 0,
       role: ""
     },
     userServices: new UsersServices(),
@@ -18,7 +18,7 @@ export const useUserStore = defineStore('user', {
         {
             username:"Eduardo",
             email: "eddy@eddy.fr",
-            user_id: 0,
+            id: 0,
             role: ""
         }
     ],

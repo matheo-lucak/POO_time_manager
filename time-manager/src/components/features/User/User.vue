@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav>
-      <Dropdown />
+      <!-- <Dropdown /> -->
     </nav>
   </div>
 </template>
