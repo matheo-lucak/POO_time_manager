@@ -1,0 +1,7 @@
+virtualmachines:
+  hosts:
+    node1:
+      ansible_host: 51.75.204.29
+      ansible_port: 30000
+      ansible_user: debian
+      ansible_ssh_private_key_file: /home/matska/Programs/2022/POO/ansible/id_rsa

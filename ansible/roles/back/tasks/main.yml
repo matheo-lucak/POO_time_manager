@@ -1,0 +1,6 @@
+- name: Deploy back
+  docker_container:
+    name: back
+    image: matska/poo_api:latest
+    ports:
+     - "30001:4000"
