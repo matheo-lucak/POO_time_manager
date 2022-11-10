@@ -1,15 +1,19 @@
 <template>
   <header class="header-container" >
     <div class="toolbar flex-row middle space-around">
+
       <AppSidebarMobile v-if="getIsMobile"/>
+
       <nav class="flex-row middle space-around">
+
         <RouterLink to="/">Time Manager</RouterLink>
-        <router-link v-if="userStore.user.id === 0" to="/auth/login">Login
-        </router-link>
-        <button v-if="userStore.user.id !== 0" @click="userStore.logoutUser()">Logout
-        </button>
+        <RouterLink v-if="userStore.user.id === 0" to="/login">Login</RouterLink>
+        <button v-if="userStore.user.id !== 0" @click="userStore.logoutUser()">Logout</button>
+
       </nav>
-      <User v-if="userStore.user.id !== 0"/>
+
+      <User/>
+
     </div>
     <div class="toolbar-border"></div>
   </header>
@@ -22,7 +26,6 @@ import User from '@/components/features/User/User.vue'
 import { useMobileStore } from '@/core/stores/mobile';
 import { useUserStore } from '@/core/stores/user.store'
 import { defineComponent } from 'vue';
-import {mapActions} from "pinia";
 
 export default defineComponent({
 
@@ -37,7 +40,7 @@ export default defineComponent({
       isMobile: false
     }
   },
-  mounted() {
+  beforeMount() {
     const { getMobile } = useMobileStore();
     this.isMobile = getMobile;
   },

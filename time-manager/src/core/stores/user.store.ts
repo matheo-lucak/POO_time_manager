@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import type {User, UserStore} from '@/core/interfaces/user.interface';
 import UsersServices from "@/core/api/users.services";
 import jwt_decode from "jwt-decode";
+import router from '@/router';
 
 export const useUserStore = defineStore('user', {
 
@@ -25,9 +26,12 @@ export const useUserStore = defineStore('user', {
       }).catch((e) => e);
     },
     loginUser(email: string, password: string) {
-      this.userServices.loginUser(email, password).then((response: User) => {
-        this.user = response;
-      }).catch((e) => e);
+      return this.userServices.loginUser(email, password);
+    },
+    logoutUser() {
+      localStorage.clear()
+      this.user = { username:"", email:"", id:0, role: "" }
+      router.push('/login');
     },
     updateUser(email: string, username: string) {
       this.userServices.putUser(this.user.id, email, username).then((response: User) => {
@@ -46,12 +50,11 @@ export const useUserStore = defineStore('user', {
         this.userServices.getUser(decoded.user_id).then((response: User) => {
           this.user = response;
         }).catch((e) => e)
+        return;
       }
+      router.push('/login');
     },
-    logoutUser() {
-      localStorage.clear()
-      this.user = { username:"", email:"", id:0, role: "" }
-    }
+    
+  }
 
-  },
 })

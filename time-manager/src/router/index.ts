@@ -1,7 +1,7 @@
 import WorkingTimesVue from '@/components/features/WorkingTimes/WorkingTimes.vue'
 import ClockVue from '@/components/features/Clock/Clock.vue'
-import LoginVue from '@/components/features/User/components/Login.vue'
-import RegisterVue from '@/components/features/User/components/Register.vue'
+import LoginVue from '@/components/features/User/Login.vue'
+import RegisterVue from '@/components/features/User/Register.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import RickCompliantVue from '@/components/shared/RickCompliant.vue'
 
@@ -44,16 +44,6 @@ const router = createRouter({
           component: () =>ClockVue
         },
         {
-          path: '/auth/login',
-          name: 'login',
-          component: () =>LoginVue
-        },
-        {
-          path: '/auth/register',
-          name: 'register',
-          component: () =>RegisterVue
-        },
-        {
           path: '/rgpd',
           name: 'rgpd',
           component: () =>RickCompliantVue
@@ -71,7 +61,16 @@ const router = createRouter({
     
       ]
     },
-    
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/components/features/User/Login.vue')
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('@/components/features/User/Register.vue')
+    }
   ]
 })
 

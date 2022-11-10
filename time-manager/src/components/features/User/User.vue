@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav>
-      <Dropdown />
+      <Dropdown  />
     </nav>
   </div>
 </template>
@@ -10,7 +10,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import {useUserStore} from "@/core/stores/user.store";
-import Dropdown from "@/components/shared/Dropdown.vue";
+import Dropdown from "@/components/features/User/components/Dropdown.vue";
 
 export default defineComponent({
   name: 'User',
@@ -30,12 +30,8 @@ export default defineComponent({
   beforeMount() {
     const { getUserFromToken } = useUserStore();
     getUserFromToken();
-
   },
   computed: {
-
-  },
-  mounted() {
 
   },
   methods: {
