@@ -22,6 +22,7 @@ jobs:
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./todolist
+          target: app_prod
           build-args: MIX_ENV=prod
           push: true
           tags: matska/poo_api:latest
@@ -30,6 +31,7 @@ jobs:
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./time-manager
+          target: app_prod
           build-args: MIX_ENV=prod
           push: true
           tags: matska/poo_app:latest

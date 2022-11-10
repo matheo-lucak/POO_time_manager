@@ -10,3 +10,9 @@ services:
       MIX_ENV: prod
     env_file:
       - .env
+  app:
+    build:
+      target: app_prod
+      context: ./time-manager
+    env_file:
+      - .env
