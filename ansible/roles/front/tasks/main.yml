@@ -3,4 +3,4 @@
     name: front
     image: matska/poo_app:latest
     ports:
-     - "30002:5173"
+     - '30002:{{ APP_PORT }}'

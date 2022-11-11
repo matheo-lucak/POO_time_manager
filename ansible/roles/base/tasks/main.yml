@@ -14,6 +14,8 @@
       - python3-pip
       - virtualenv
       - python3-setuptools
+      - libpq-dev
+      - firewalld
     state: latest
     update_cache: true
 

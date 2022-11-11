@@ -5,3 +5,12 @@ virtualmachines:
       ansible_port: 30000
       ansible_user: debian
       ansible_ssh_private_key_file: /home/matska/Programs/2022/POO/ansible/id_rsa
+  vars:
+    APP_PORT: '5173'
+    API_PORT: '4000'
+  
+    db_user: postgres
+    db_password: postgres
+    db_name: postgres
+    db_host: "psql_db"
+    db_port: "5432"
