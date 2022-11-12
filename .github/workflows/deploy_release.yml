@@ -39,18 +39,22 @@ jobs:
   deploy_with_ansible:
     name: Deploy with ansible
     runs-on: ubuntu-latest
-    needs: push_to_registry
+    # needs: push_to_registry
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
-      - name: Run playbook
-        uses: dawidd6/action-ansible-playbook@v2
-        with:
-          playbook: deploy.yml
-          directory: ./ansible
-          key: -----BEGIN RSA PRIVATE KEY-----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-----END RSA PRIVATE KEY-----
-          options: |
-            --inventory inventory.yaml
-            --extra-vars "ansible_sudo_pass=debian"
-            -vv
-            --verbose
+
+      - name: Install ansible
+        run: |
+          sudo apt -yqq update
+          sudo apt -yqq install ansible
+
+      - name: Ping remote nodes
+        run: |
+          cd ansible
+          chmod 600 ./id_rsa
+          ansible machines -m ping -i inventory.yaml --ssh-extra-args="-o StrictHostKeyChecking=no"
+
+      - name: Run deploy playbook
+        run: |
+          ansible-playbook -i inventory.yaml deploy.yml -vv --extra-vars "ansible_sudo_pass=debian" --ssh-extra-args="-o StrictHostKeyChecking=no"
