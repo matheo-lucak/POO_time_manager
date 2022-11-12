@@ -21,6 +21,7 @@ COPY mix.lock .
 RUN mix deps.get
 RUN mix deps.compile
 RUN mix phx.digest
+RUN mix phx.gen.release
 RUN mix release
 
 # ---- Application Stage ----
@@ -33,7 +34,7 @@ ENV PORT="${API_PORT}"
 EXPOSE "${PORT}"
 
 # install runtime dependencies
-RUN apk add --no-cache libstdc++ openssl ncurses-libs
+RUN apk add --no-cache libstdc++ openssl ncurses-libs sudo
 
 ENV USER="elixir"
 ENV PHX_SERVER=1
@@ -57,7 +58,7 @@ RUN \
 USER "${USER}"
 
 # copy release executables
-COPY --from=base --chown="${USER}":"${USER}" /app/_build/"${MIX_ENV}"/rel/todolist ./
+COPY --from=base /app/_build/"${MIX_ENV}"/rel/todolist ./
 
 ENTRYPOINT ["bin/todolist"]
 
