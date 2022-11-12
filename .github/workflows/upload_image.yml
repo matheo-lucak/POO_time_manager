@@ -35,3 +35,21 @@ jobs:
           build-args: MIX_ENV=prod
           push: true
           tags: matska/poo_app:latest
+
+  deploy_with_ansible:
+    name: Deploy application with ansible
+    runs-on: ubuntu-latest
+    needs: push_to_registry
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: deploy.yml
+          directory: ./ansible
+          key: b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcnNhAAAAAwEAAQAAAQEA3fs4V5yQwY40tczFXrynENkFbhRCCKEphkPDNjdF0vMGZQti0lGhd5gVYl/prD2w4CvKYV8KX8AoT4XmshDqfewB97OF70SJ7y+eTmjj1VKI70Y/N9OXHgG3+yjOl7s/IgZH1s99/tGlgTc+SLQ0samz/STVtlZkPMZY/thepPBcpeuRviJsJJ5ZG9UMWeYXISyFkMJbaepVCj2fNztelOufk0JXW0941un+ICjAYyYKHOa/lSf4HdhqJcaMH6gMbTe4jRCQhiauUoSuaMKIuvQ6hoeYRtuZ/TlsE1VOldiqspaB2ePYDn/cAXNRgQOUzYUP/3EmQRsOYljynZ3snQAAA8gycAUXMnAFFwAAAAdzc2gtcnNhAAABAQDd+zhXnJDBjjS1zMVevKcQ2QVuFEIIoSmGQ8M2N0XS8wZlC2LSUaF3mBViX+msPbDgK8phXwpfwChPheayEOp97AH3s4XvRInvL55OaOPVUojvRj8305ceAbf7KM6Xuz8iBkfWz33+0aWBNz5ItDSxqbP9JNW2VmQ8xlj+2F6k8Fyl65G+Imwknlkb1QxZ5hchLIWQwltp6lUKPZ83O16U65+TQldbT3jW6f4gKMBjJgoc5r+VJ/gd2GolxowfqAxtN7iNEJCGJq5ShK5owoi69DqGh5hG25n9OWwTVU6V2KqyloHZ49gOf9wBc1GBA5TNhQ//cSZBGw5iWPKdneydAAAAAwEAAQAAAQADvGmrV9A74bfTY3ni6UvqhayIuMCPwp6fSt6rN+zt6vctli54mbUc/StG95RIONWUQEhssRvMlsBW7kr+rjg0HFfAIn5bk4y6wNNqQGutOHFjjYwc1WvSrna5PGuVtCoQ2Yg1/lIBiue9L//VW2sTnmaQGSGbqwKO30u6JkwZfIYYXz2HSpIO4pR68k39Azx6MEgTNVBrowPVaq8i7tSf3eShOVYsbMRbQvAO6++Ocjdjxq6kx6Ueh5m8Fxc/3+u68ENcVEKnL93Ym/ZH0uqORwMgDnFTjfabaQiDxDDA4QFh01Htcs9jetis0NCf0gTaQfD8PSWNjLNvs5ywpv7BAAAAgQCw5RtcSd7QTq+DnKWYoFZN8xpCLSEuh0RcICGkIGjV6vFIZL3XEzJkh9nBQ+5h5nFkLRHUQaggMXfRjbuU3U2AuqIpkATXhi8z2ZTJoupmgJOCTfkRnUc0ZnIC/+lBQaox8Ws40T9uSxOWyXRUTXfMBj0Z2uGWRgC/94gbQNrlNAAAAIEA/eUXcm2N4lfEhf2KsFvwOqZH3gGNto/M5d3BK6l9w4rfQpOjMRWTgeEXCWj1HorMoMrVmZ7R8M3zVDiIob13TNCl8TYkK8xcy+IdvXlj6rD4l+sWYwB6GazC61TSDJ8/+73ge65UtdkcnlqVb2CNiaPQJuSLgWmMyk670BPv7m0AAACBAN/SY8/QrFzmdxmNg3g74KCASY3qVBAXSWxJ14k6McFnsbsznlxn3atKeF1sPJKrm5iraBYSlaVT5881sh2vNMko/O/RjqGpp0t3pD1X/5pH0f8yZ18Nc1XBHLMnuElfyoXqGpQIkuKMIuotIraT5Q+CLrQlT4b46xtd32xITVjxAAAAEG1hdHNrYUBtYXRza2EtUEMBAg==
+          vault_password: debian
+          options: |
+            --inventory inventory.yaml
+            --verbose
