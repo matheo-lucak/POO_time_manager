@@ -39,7 +39,7 @@ jobs:
   deploy_with_ansible:
     name: Deploy with ansible
     runs-on: ubuntu-latest
-    # needs: push_to_registry
+    needs: push_to_registry
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -49,12 +49,23 @@ jobs:
           sudo apt -yqq update
           sudo apt -yqq install ansible
 
-      - name: Ping remote nodes
+      - name: Setup SSH
         run: |
           cd ansible
           chmod 600 ./id_rsa
+          eval `ssh-agent -s`
+          ssh-add ./id_rsa
+          echo "Host 51.75.204.29" >> ~/.ssh/config
+          echo "  HostName 51.75.204.29" >> ~/.ssh/config
+          echo "  User debian" >> ~/.ssh/config
+          echo "  Port 30000" >> ~/.ssh/config
+
+      - name: Ping remote nodes
+        run: |
+          cd ansible
           ansible machines -m ping -i inventory.yaml --ssh-extra-args="-o StrictHostKeyChecking=no"
 
       - name: Run deploy playbook
         run: |
+          cd ansible
           ansible-playbook -i inventory.yaml deploy.yml -vv --extra-vars "ansible_sudo_pass=debian" --ssh-extra-args="-o StrictHostKeyChecking=no"
