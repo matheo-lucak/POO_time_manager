@@ -46,13 +46,11 @@ jobs:
 
   deploy_with_ansible:
     name: Deploy with ansible
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: push_to_registry
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
-        with:
-          ref: main
 
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
