@@ -4,7 +4,7 @@ machines:
       ansible_host: 51.75.204.29
       ansible_port: 30000
       ansible_user: debian
-      ansible_ssh_private_key_file: ./id_rsa
+      # ansible_ssh_private_key_file: ./id_rsa
       ansible_python_interpreter: /bin/python3
   vars:
     APP_PORT: '5173'
