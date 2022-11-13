@@ -35,6 +35,15 @@ jobs:
           push: true
           tags: matska/poo_api:latest
 
+      - name: Build back seed image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: ./todolist
+          target: app_seed
+          build-args: MIX_ENV=prod
+          push: true
+          tags: matska/poo_api_seed:latest
+
       - name: Build front image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:

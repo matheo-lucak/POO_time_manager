@@ -28,9 +28,6 @@ RUN mix release
 FROM alpine:3.14.2 AS app_prod
 
 ARG MIX_ENV=prod
-ARG DATABASE_URL="postgres://postgres:postgres@db:5432/todolist_dev"
-ARG SECRET_KEY_BASE="${SECRET_KEY_BASE}"
-ENV PORT="${API_PORT}"
 EXPOSE "${PORT}"
 
 # install runtime dependencies
@@ -65,10 +62,19 @@ ENTRYPOINT ["bin/todolist"]
 CMD ["start"]
 
 # ---- Application Stage ----
+FROM base as app_seed
+
+ARG MIX_ENV=prod
+EXPOSE "${API_PORT}"
+
+WORKDIR /app
+
+CMD ["mix", "run", "priv/repo/seeds.exs"]
+
+# ---- Application Stage ----
 FROM elixir:latest as app_dev
 
 ARG MIX_ENV=dev
-ENV PORT="${API_PORT}"
 EXPOSE "${API_PORT}"
 
 RUN echo ${MIX_ENV}
@@ -91,7 +97,6 @@ RUN mix deps.update --all
 FROM app_dev as app_test
 
 ARG MIX_ENV=test
-ENV PORT="${API_PORT}"
 EXPOSE "${API_PORT}"
 
 WORKDIR /api
