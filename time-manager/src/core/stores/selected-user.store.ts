@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import type {User, SelectedUserStore} from '@/core/interfaces/user.interface';
 import UsersServices from "@/core/api/users.services";
 
-export const useUserStore = defineStore('user', {
+export const useSelectedUserStore = defineStore('user', {
 
   // TODO: implement selected user CRUD and stuff (by a manager)
   state: (): SelectedUserStore => ({

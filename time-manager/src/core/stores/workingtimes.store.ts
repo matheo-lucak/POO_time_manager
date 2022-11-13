@@ -2,15 +2,14 @@ import { defineStore } from 'pinia'
 import type { Workingtime, WorkingtimeStore } from '../interfaces/workingtime.interface';
 import WorkingtimesServices from '@/core/api/workingtimes.services';
 import type { AxiosError } from 'axios';
+import { useUserStore } from './user.store';
 
 export const useWorkingtimesStore = defineStore('workingtimes', {
     state: (): WorkingtimeStore => ({ 
         workingtimes: [],
     }),
     getters: {
-        getWorkingtimes(state)  {
-            return this.workingtimes;
-        }
+        getWorkingtimes: (state) => state.workingtimes,
     },
     actions: {
         fetchWorkingtimes(userId: number) {
@@ -18,7 +17,12 @@ export const useWorkingtimesStore = defineStore('workingtimes', {
             workingtimeService.getAllWorkingtime(userId).then((response: any) => {
                 this.workingtimes = response.data.data;
             })
-            .catch((error: AxiosError) => error);
+            .catch((e: any) => {
+                if(e.response.status == 401) {
+                    const { logoutUser } = useUserStore();
+                    logoutUser();
+                }
+            })
         
         },
         getWorkingtime(userId: string, id: string) {

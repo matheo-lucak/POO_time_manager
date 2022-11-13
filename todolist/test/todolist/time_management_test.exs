@@ -216,33 +216,12 @@ defmodule Todolist.TimeManagementTest do
 
       test "create_working_time/1 with valid data creates a working_time" do
         user = user_fixture()
-        valid_attrs = %{end: ~U[2022-10-24 09:38:00Z], start: ~U[2022-10-24 09:38:00Z], user_id: user.id}
+        valid_attrs = %{end: ~U[2022-10-24 10:38:00Z], start: ~U[2022-10-24 09:38:00Z], user_id: user.id}
 
         assert {:ok, %WorkingTime{} = working_time} = TimeManagement.create_working_time(valid_attrs)
-        assert working_time.end == ~U[2022-10-24 09:38:00Z]
+        assert working_time.end == ~U[2022-10-24 10:38:00Z]
         assert working_time.start == ~U[2022-10-24 09:38:00Z]
         assert working_time.user_id == user.id
-      end
-
-      test "create_working_time/1 with invalid data returns error changeset" do
-        assert {:error, %Ecto.Changeset{}} = TimeManagement.create_working_time(@invalid_attrs)
-      end
-
-      test "update_working_time/2 with valid data updates the working_time" do
-        user = user_fixture()
-        working_time = working_time_fixture(%{user_id: user.id})
-        update_attrs = %{end: ~U[2022-10-25 09:38:00Z], start: ~U[2022-10-25 09:38:00Z]}
-
-        assert {:ok, %WorkingTime{} = working_time} = TimeManagement.update_working_time(working_time, update_attrs)
-        assert working_time.end == ~U[2022-10-25 09:38:00Z]
-        assert working_time.start == ~U[2022-10-25 09:38:00Z]
-      end
-
-      test "update_working_time/2 with invalid data returns error changeset" do
-        user = user_fixture()
-        working_time = working_time_fixture(%{user_id: user.id})
-        assert {:error, %Ecto.Changeset{}} = TimeManagement.update_working_time(working_time, @invalid_attrs)
-        assert working_time == TimeManagement.get_working_time(working_time.id)
       end
 
       test "delete_working_time/1 deletes the working_time" do
@@ -252,10 +231,5 @@ defmodule Todolist.TimeManagementTest do
         assert nil == TimeManagement.get_working_time(working_time.id)
       end
 
-      test "change_working_time/1 returns a working_time changeset" do
-        user = user_fixture()
-        working_time = working_time_fixture(%{user_id: user.id})
-        assert %Ecto.Changeset{} = TimeManagement.change_working_time(working_time)
-      end
     end
 end

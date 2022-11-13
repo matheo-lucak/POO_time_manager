@@ -11,6 +11,7 @@ export interface User
 export interface UserStore
 {
     user: User;
+    connectedAs: User;
     userServices: UsersServices;
 }
 

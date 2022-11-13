@@ -40,7 +40,8 @@
 <script lang="ts">
 import Datepicker from 'vue3-datepicker';
 import { defineComponent } from 'vue';
-import { useWorkingtimesStore } from '@/core/stores/workingtimes';
+import { useWorkingtimesStore } from '@/core/stores/workingtimes.store';
+import { useUserStore } from '@/core/stores/user.store';
 
 export default defineComponent({
     data() {
@@ -75,7 +76,12 @@ export default defineComponent({
             this.startDate = new Date(this.workingTime.start);
             this.endDate = new Date(this.workingTime.end);
 
-        }).catch(error => error);
+        }).catch((e: any) => {
+            if(e.response.status == 401) {
+                const { logoutUser } = useUserStore();
+                logoutUser();
+            }
+        });
 
     },
     computed: {

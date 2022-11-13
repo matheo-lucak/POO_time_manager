@@ -10,12 +10,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import {useUserStore} from "@/core/stores/user.store";
-import Dropdown from "@/components/shared/Dropdown.vue";
+import Dropdown from "@/components/features/User/components/Dropdown.vue";
 
 export default defineComponent({
   name: 'User',
   components: {Dropdown},
-  // TODO: wrap login register + crud user in here, openable from header
+  // TODO: delete and update
 
   // TODO: components we'll wrap in the sidebar, if current user is general manager promote / demote routes implemented, if not just regular statistics + crud for the selected user
   setup() {
@@ -28,13 +28,19 @@ export default defineComponent({
     }
   },
   beforeMount() {
-
+    const { getUserFromToken } = useUserStore();
+    getUserFromToken();
   },
   computed: {
 
   },
   methods: {
+    updateUser() {
 
+    },
+    deleteUser() {
+
+    },
   }
 })
 </script>
@@ -50,8 +56,8 @@ nav .menu-item {
   transition: 0.4s;
 }
 
-div. menu-item.active,
-div. menu-item:hover {
+div .menu-item.active,
+div .menu-item:hover {
   background-color: #3c4462;
   border-bottom-color: #a94442;
 }

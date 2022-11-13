@@ -8,15 +8,15 @@ export default class UsersServices extends AxiosServices
 
     // TODO: implement promote, demote
 
-    public async getUser(id: number) : Promise<User>
+    public async getUser(id: string) : Promise<User>
     {
-        let response = await this.get(`/users/${id}`, { params: { } });
+        let response = await this.get(`/users/${id}`, { params: {} });
         return response.data.data;
     }
 
     public async getAllUser(email: string | undefined, username: string | undefined) : Promise<User>
     {
-        let config : any = {params: {        } };
+        let config : any = { params: {} };
         if (email)
         {
             config.params.email = email;
@@ -31,30 +31,35 @@ export default class UsersServices extends AxiosServices
 
     public async postUser(id: number) : Promise<User>
     {
-        let response = await this.post(`/users/${id}`, null,null);
+        let response = await this.post(`/users/${id}`, null, { params: {}});
         return response.data.data;
     }
 
-    public async putUser(id: number) : Promise<User>
+    public async putUser(id: number, email: string | undefined, username: string | undefined) : Promise<User>
     {
-        let response = await this.put(`/users/${id}`, null, null);
+        let body : any = { username, email };
+        let response = await this.put(`/users/${id}`, body, { params: {}});
         return response.data.data;
     }
 
     public async deleteUser(id: number) : Promise<User>
     {
-        let response = await this.delete(`/users/${id}`, null);
+        let response = await this.delete(`/users/${id}`, { params: {}});
         return response.data.data;
     }
 
     public async loginUser(email: string, password: string) : Promise<User>
     {
         let body : any = { email, password };
-        return this.post(`/auth/login`, body, null).then(response => {
+        
+        return this.post(`/auth/login`, body, { params: {}}).then(response => {
 
+            // Set token and set id of current user in connectedAs
             localStorage.setItem('token', response.data.token);
 
             let decoded : any = jwt_decode(response.data.token);
+
+            localStorage.setItem('connectedAs', decoded.user_id);
 
             return this.getUser(decoded.user_id);
         });

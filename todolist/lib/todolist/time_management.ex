@@ -63,13 +63,35 @@ defmodule Todolist.TimeManagement do
     clock = find_or_create_user_clock(userID)
 
     if clock.status == true do
+      now = DateTime.utc_now()
+      now = DateTime.add(now, 10, :hour)
+      now =
+        if Date.diff(clock.time, now) != 0 do
+          # Truncate the time whenever overlaps a day
+          %DateTime{
+            year: clock.time.year,
+            month: clock.time.month,
+            day: clock.time.day,
+            zone_abbr: clock.time.zone_abbr,
+            hour: 23,
+            minute: 59,
+            second: 59,
+            utc_offset: clock.time.utc_offset,
+            std_offset: clock.time.std_offset,
+            time_zone: clock.time.time_zone
+          }
+        else
+          now
+        end
+
       # Turn off the clock.
       # Create new WorkingTime
       create_working_time(%{
-        end: DateTime.utc_now(),
+        end: now,
         start: clock.time,
         user_id: userID
       })
+
       update_clock(clock, %{status: false})
     else
       # Turn on the clock
@@ -204,15 +226,24 @@ defmodule Todolist.TimeManagement do
     |> filter_end(filter["end"])
   end
 
+  def list_overlapping_working_times_by_user(userID, time_start, time_end) do
+    WorkingTime
+    |> filter_user(userID)
+    |> filter_overlap(time_start, time_end)
+    |> Repo.all()
+  end
+
   defp filter_user(query, nil), do: query
-  defp filter_user(query, userID), do: from t in query, where: t.user_id == ^userID
+  defp filter_user(query, userID), do: from(t in query, where: t.user_id == ^userID)
 
   defp filter_start(query, nil), do: query
-  defp filter_start(query, start_after), do: from t in query, where: t.start >= ^start_after
+  defp filter_start(query, start_after), do: from(t in query, where: t.start >= ^start_after)
 
   defp filter_end(query, nil), do: query
-  defp filter_end(query, end_before), do: from t in query, where: t.end <= ^end_before
+  defp filter_end(query, end_before), do: from(t in query, where: t.end <= ^end_before)
 
+  defp filter_overlap(query, time_start, time_end),
+    do: from(t in query, where: not (t.start >= ^time_end or t.end <= ^time_start))
 
   defmodule WorkingTimeNotFoundError do
     defexception message: "Working time not found"
@@ -237,7 +268,7 @@ defmodule Todolist.TimeManagement do
 
   """
   def get_working_time(id) do
-    query = from t in WorkingTime, where: t.id == ^id
+    query = from(t in WorkingTime, where: t.id == ^id)
     Repo.one(query)
   end
 
@@ -249,10 +280,9 @@ defmodule Todolist.TimeManagement do
   end
 
   def get_working_time_by_user(userID, id) do
-    query = from t in WorkingTime, where: t.user_id == ^userID and t.id == ^id
+    query = from(t in WorkingTime, where: t.user_id == ^userID and t.id == ^id)
     Repo.one(query)
   end
-
 
   @doc """
   Creates a working_time.

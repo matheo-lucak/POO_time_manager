@@ -13,8 +13,6 @@
 
 import { defineComponent } from "vue";
 import moment from 'moment';
-import Clock from "@/components/features/Clock/Clock.vue";
-
 
 export default defineComponent({
   name: "Timer",
