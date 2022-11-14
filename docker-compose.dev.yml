@@ -13,3 +13,10 @@ services:
     entrypoint: bash /api/entrypoint.sh
     volumes:
       - ./todolist:/api
+
+  app:
+    build:
+      target: app_dev
+      context: ./time-manager
+    volumes:
+      - ./time-manager:/app

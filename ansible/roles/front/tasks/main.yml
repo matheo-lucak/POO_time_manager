@@ -1,0 +1,6 @@
+- name: Deploy front
+  docker_container:
+    name: front
+    image: matska/poo_app:latest
+    ports:
+     - '{{ EXPOSED_APP_PORT }}:{{ APP_PORT }}'

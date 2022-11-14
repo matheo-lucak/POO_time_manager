@@ -148,6 +148,7 @@ defmodule Todolist.TimeManagementTest do
       assert clock1 == TimeManagement.get_user_clock(user.id)
       assert TimeManagement.list_working_times_by_user(user.id) == []
 
+      Process.sleep(1000)
       {:ok, clock2} = TimeManagement.toggle_user_clock(user.id)
       assert clock2.status == false
       assert clock2 = TimeManagement.get_user_clock(user.id)
@@ -165,13 +166,23 @@ defmodule Todolist.TimeManagementTest do
       assert clock1.status == true
       assert clock1 == TimeManagement.get_user_clock(user.id)
 
+      Process.sleep(1000)
       {:ok, clock2} = TimeManagement.toggle_user_clock(user.id)
       assert clock2.status == false
       assert clock2 == TimeManagement.get_user_clock(user.id)
 
+      Process.sleep(1000)
       {:ok, clock3} = TimeManagement.toggle_user_clock(user.id)
       assert clock3.status == true
       assert clock3 == TimeManagement.get_user_clock(user.id)
+
+      Process.sleep(1000)
+      {:ok, clock4} = TimeManagement.toggle_user_clock(user.id)
+      assert clock4.status == false
+      assert clock4 == TimeManagement.get_user_clock(user.id)
+
+      TimeManagement.list_working_times_by_user(user.id) |> length == 2
+
     end
 
     test "toggle_user_clock/1 Toggle many times" do

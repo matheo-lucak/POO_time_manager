@@ -2,7 +2,7 @@
 
   <div id="clock">
 
-    <h1>Hello {{ getUser.username }}! This is the clock page.</h1>
+    <!-- <h1>Hello {{ this.user.username }}! This is the clock page.</h1> -->
     <h2><Timer :date="clockStore.getClock.time" :status="clockStore.getClock.status"/> </h2>
     <div v-if="clockStore.getClock.status === true">ClockActivated</div>
     

@@ -64,7 +64,6 @@ defmodule Todolist.TimeManagement do
 
     if clock.status == true do
       now = DateTime.utc_now()
-      now = DateTime.add(now, 10, :hour)
       now =
         if Date.diff(clock.time, now) != 0 do
           # Truncate the time whenever overlaps a day

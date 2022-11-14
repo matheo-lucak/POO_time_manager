@@ -27,16 +27,16 @@ export default class TeamsServices extends AxiosServices
 
     public async postTeam(teamId: number) : Promise<Team>
     {
-        return this.post(`/teams/${teamId}`, null,null);
+        return this.post(`/teams/${teamId}`, null,{});
     }
 
     public async putTeam(teamId: number) : Promise<Team>
     {
-        return this.put(`/teams/${teamId}`, null, null);
+        return this.put(`/teams/${teamId}`, null, {});
     }
 
     public async deleteTeam(teamId: number) : Promise<Team>
     {
-        return this.delete(`/teams/${teamId}`, null);
+        return this.delete(`/teams/${teamId}`, {});
     }
 }

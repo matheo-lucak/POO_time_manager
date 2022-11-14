@@ -7,6 +7,8 @@ RUN apk add --no-cache build-base git python3 curl
 WORKDIR /app
 ARG MIX_ENV=prod
 
+COPY poo.matska.fr_private_key.key .
+COPY poo.matska.fr_ssl_certificate.cer .
 RUN mix local.hex --force
 RUN mix local.rebar --force
 
@@ -21,19 +23,17 @@ COPY mix.lock .
 RUN mix deps.get
 RUN mix deps.compile
 RUN mix phx.digest
+RUN mix phx.gen.release
 RUN mix release
 
 # ---- Application Stage ----
 FROM alpine:3.14.2 AS app_prod
 
 ARG MIX_ENV=prod
-ARG DATABASE_URL="postgres://postgres:postgres@db:5432/todolist_dev"
-ARG SECRET_KEY_BASE="${SECRET_KEY_BASE}"
-ENV PORT="${API_PORT}"
 EXPOSE "${PORT}"
 
 # install runtime dependencies
-RUN apk add --no-cache libstdc++ openssl ncurses-libs
+RUN apk add --no-cache libstdc++ openssl ncurses-libs sudo
 
 ENV USER="elixir"
 ENV PHX_SERVER=1
@@ -57,17 +57,30 @@ RUN \
 USER "${USER}"
 
 # copy release executables
-COPY --from=base --chown="${USER}":"${USER}" /app/_build/"${MIX_ENV}"/rel/todolist ./
+COPY --from=base /app/_build/"${MIX_ENV}"/rel/todolist ./
+
+# copy ssl
+COPY --from=base /app/poo.matska.fr_private_key.key ./
+COPY --from=base /app/poo.matska.fr_ssl_certificate.cer ./
 
 ENTRYPOINT ["bin/todolist"]
 
 CMD ["start"]
 
 # ---- Application Stage ----
+FROM base as app_seed
+
+ARG MIX_ENV=prod
+EXPOSE "${API_PORT}"
+
+WORKDIR /app
+
+CMD ["mix", "run", "priv/repo/seeds.exs"]
+
+# ---- Application Stage ----
 FROM elixir:latest as app_dev
 
 ARG MIX_ENV=dev
-ENV PORT="${API_PORT}"
 EXPOSE "${API_PORT}"
 
 RUN echo ${MIX_ENV}
@@ -90,7 +103,6 @@ RUN mix deps.update --all
 FROM app_dev as app_test
 
 ARG MIX_ENV=test
-ENV PORT="${API_PORT}"
 EXPOSE "${API_PORT}"
 
 WORKDIR /api

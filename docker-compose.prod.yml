@@ -10,3 +10,19 @@ services:
       MIX_ENV: prod
     env_file:
       - .env
+  api_seed:
+    build:
+      target: app_seed
+      context: ./todolist
+      args:
+        - MIX_ENV=prod
+    environment:
+      MIX_ENV: prod
+    env_file:
+      - .env
+  app:
+    build:
+      target: app_prod
+      context: ./time-manager
+    env_file:
+      - .env

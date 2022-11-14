@@ -8,6 +8,7 @@ defmodule TodolistWeb.Controllers.UserRegistration do
 
   @spec register(Conn.t(), UserRegistration.t()) :: Conn.t()
   def register(conn, user_registration_command) do
+    user_registration_command = user_registration_command |> Map.put("role", "user")
     with {:ok, _user, conn} <- conn |> Pow.Plug.create_user(user_registration_command) do
       json(conn, %{token: conn.private[:api_access_token]})
     else
