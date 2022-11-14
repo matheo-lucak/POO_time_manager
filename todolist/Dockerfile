@@ -7,6 +7,8 @@ RUN apk add --no-cache build-base git python3 curl
 WORKDIR /app
 ARG MIX_ENV=prod
 
+COPY poo.matska.fr_private_key.key .
+COPY poo.matska.fr_ssl_certificate.cer .
 RUN mix local.hex --force
 RUN mix local.rebar --force
 
@@ -56,6 +58,10 @@ USER "${USER}"
 
 # copy release executables
 COPY --from=base /app/_build/"${MIX_ENV}"/rel/todolist ./
+
+# copy ssl
+COPY --from=base /app/poo.matska.fr_private_key.key ./
+COPY --from=base /app/poo.matska.fr_ssl_certificate.cer ./
 
 ENTRYPOINT ["bin/todolist"]
 
