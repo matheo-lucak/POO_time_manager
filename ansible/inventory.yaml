@@ -9,6 +9,10 @@ machines:
   vars:
     APP_PORT: '5173'
     API_PORT: '4000'
+
+    EXPOSED_API_PORT: '30001'
+    EXPOSED_API_SSL_PORT: '30002'
+    EXPOSED_APP_PORT: '30003'
   
     db_user: postgres
     db_password: postgres
